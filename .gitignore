@@ -1,0 +1,43 @@
+# Python
+__pycache__
+*.pyc
+*.egg-info
+dist
+.vscode/*
+
+# Log
+*.log
+*.log.*
+*.json
+*.jsonl
+*.tar.gz
+# Data
+!**/alpaca-data-conversation.json
+playground/data/
+playground/collected_jacobi_trajectory
+playground/calvin_data/*.json
+playground/calvin_data/calvin_debug_dataset
+playground/calvin_data/task_ABCD_D
+playground/calvin_data_audio/*.json
+
+# Editor
+.idea
+*.swp
+
+# Other
+.DS_Store
+wandb
+output
+llava-v1.5-7b
+checkpoints
+ckpts*
+clip-vit-large-patch14-336
+
+.ipynb_checkpoints
+*.ipynb
+
+# DevContainer
+!.devcontainer/*
+
+# Demo
+serve_images/
