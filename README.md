@@ -33,6 +33,11 @@ cd vlas/scripts
 python /data/user/wsong890/user68/project/vlas/scripts/helper/calvin2json.py
 ```
 
+This is a demonstration for running and testing:
+录制：Wenxuan的快速会议
+日期：2025-05-27 20:14:28
+录制文件：https://meeting.tencent.com/crm/l7LvjRQd7c
+
 # Train LLaVA
 ```bash
 
