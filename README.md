@@ -1,7 +1,5 @@
 # Install
 
-
-
 1. Clone this repository and navigate to LLaVA folder
 ```bash
 git clone https://github.com/haotian-liu/LLaVA.git
@@ -38,7 +36,32 @@ This is a demonstration for running and testing:
 日期：2025-05-27 20:14:28
 录制文件：https://meeting.tencent.com/crm/l7LvjRQd7c
 
-# Train LLaVA
+# Prepare Data
+Please use scripts/helper/calvin2json.py. This file automatically:  
+- Stitches CALVIN's multi-view images  
+- Formats data to LLaVA template (image+text)  
+- Outputs: processed images + JSON
+Note: Configure output paths in scripts.
+
+# Core Codes
+The LLaVA/llava directory contains all model architecture files, training implementations, and server-side deployment components. Specifically:
+
+1. LLaVA/llava/model/ 
+   - Contains core model architecture files
+   - Key modification file: llava_arch.py (primary file to edit when customizing model architecture)
+   - Suggested workflow: Trace through this file's modifications to build custom model variants
+
+2. LLaVA/llava/train/
+   - Hosts training scripts
+   - Standard VLA fine-tuning on CALVIN dataset uses: calvin_train_obs.py
+   - Includes all necessary training utilities and configurations
+
+3. LLaVA/llava/serve/
+   - Contains production deployment modules
+   - Enables server-side model hosting for inference
+   - Client access via network API calls (REST/gRPC)
+
+# Train LLaVA-VLA
 ```bash
 
 cd vlas
@@ -102,7 +125,7 @@ deepspeed --include=localhost:0,1 /data/user/wsong890/user68/project/vlas/llava/
 
 ```
 
-# Evaluate LLaVA in Calvin
+# Evaluate LLaVA-VLA in Simulator
 
 start model server on you own port(here is 9097)
 
