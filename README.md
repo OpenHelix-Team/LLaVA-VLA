@@ -1,3 +1,8 @@
+# Results
+
+![Result Visualization](./image/exp.png)
+*Figure 1: Caption describing your key results (e.g., "Comparison of success rates across different methods")*
+
 # Install
 
 1. Clone this repository and navigate to LLaVA folder
