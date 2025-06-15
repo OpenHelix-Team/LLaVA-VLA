@@ -77,7 +77,7 @@ pip install --upgrade pip
 pip install -e .
 ```
 ### Dataset
-2. Clone and isntall Calvin
+2. Clone and install Calvin
 ```bash
 git clone --recurse-submodules https://github.com/mees/calvin.git
 export CALVIN_ROOT=$(pwd)/calvin
@@ -90,7 +90,7 @@ sh install.sh
 3. Download Calvin  dataset
 ```bash
 cd $CALVIN_ROOT/dataset
-sh download_data.sh D | ABC | ABCD | debug
+sh download_data.sh ABC
 ```
 4. Preprocess Calvin dataset
 ```bash
