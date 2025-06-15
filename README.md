@@ -12,8 +12,12 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 
 
 ## 🔥News
-
 - **2025.06.15** 🌟 We are proud to introduce LLaVA, a model designed to balabala.
+
+## TODO
+- [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm.
+- [ ] Release real-world demo.
+- [ ] Release models based on more baselines.
 
 ## 📌Contents
 - [Overview](#model-overview)
@@ -170,10 +174,6 @@ bash yourpath/calvin/calvin_models/calvin_agent/evaluation/evaluate_policy_multi
 
 ```
 evaluate_policy_multiserver.sh
-
-## 🎓TODO
-<a id="todo"></a>
-Next, we will deploy LLaVA-VLA on Robotwin！
 
 ## 🙏Acknowledgement
 <a id="acknowledgement"></a>
