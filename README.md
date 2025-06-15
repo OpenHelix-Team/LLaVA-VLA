@@ -25,14 +25,13 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 - [Contact](#contact)
 - [Citation](#citation)
 
-## 🛠️Model Overview
+## 📊Overview
 <a id="model-overview"></a>
 ![Model Architecture](./images/pipline.png)
 The network architecture of our LLaVA-VLA. Given images, proprioception and language instructions, our method first tokenizes the input and then feeds the results into the LLM. The LLM outputs an action chunking, which are finally detokenized into valid action values and deployed on the mechanical arm.
 
-## 📊Experimental Results
 <a id="experimental-results"></a>
-LLaVA-VLA's performance is shown in the following table:
+LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the simple structure, it outperforms several popular strong baselines that rely on large-scale pre-training and complex structures.
 ![Result Visualization](./images/exp.png)
 
 
