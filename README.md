@@ -13,7 +13,7 @@ We introduce **LLaVA-VLA**, a lightweight Vision-Language-Action model based on 
 
 - **2025.06.15** 🌟 We are proud to introduce LLaVA, a model designed to balabala.
 
-## Contents
+## 📌Contents
 - [Model Overview](#model-overview)
 - [Experimental Results](#Experimental-Results)
 - [Installation](#installation)
@@ -25,17 +25,17 @@ We introduce **LLaVA-VLA**, a lightweight Vision-Language-Action model based on 
 - [Contact](#contact)
 - [Citation](#citation)
 
-## Model Overview
+## 🛠️Model Overview
 <a id="model-overview"></a>
 ![Result Visualization](./images/pipline.png)
 *Figure 1: Caption describing your key results
 
-## Experimental Results
+## 📊Experimental Results
 <a id="experimental-results"></a>
 ![Result Visualization](./images/exp.png)
 *Figure 2: Caption describing your key results (e.g., "Comparison of success rates across different methods")*
 
-## Installation
+## 💾Installation
 <a id="installation"></a>
 
 ### Dependencies
@@ -90,7 +90,7 @@ cd vlas/scripts
 python yourpath/calvin2json.py
 ```
 
-## Training
+## 📈Training
 <a id="training"></a>
 ```bash
 cd vlas
@@ -153,7 +153,7 @@ deepspeed --include=localhost:0,1 yourpath/llava/train/calvin_train_obs.py \
     --report_to_wandb_run_name your_run_name
 ```
 
-## Evaluation
+## 🔬Evaluation
 <a id="evaluation"></a>
 start model server on you own port(here is 9097)，
 CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
@@ -170,19 +170,19 @@ bash yourpath/calvin/calvin_models/calvin_agent/evaluation/evaluate_policy_multi
 ```
 evaluate_policy_multiserver.sh
 
-## TODO
+## 🎓TODO
 <a id="todo"></a>
 abc
 
-## Acknowledgement
+## 🙏Acknowledgement
 <a id="acknowledgement"></a>
 abc
 
-## Contact
+## ✉️Contact
 <a id="contact"></a>
 abc
 
-## Citation
+## 📑Citation
 <a id="citation"></a>
 abc
 
