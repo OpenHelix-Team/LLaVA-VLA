@@ -27,18 +27,8 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 
 ## 🛠️Model Overview
 <a id="model-overview"></a>
-![Result Visualization](./images/pipline.png)
-The model architecture, referred to as **LLaVA-VLA**, is designed to facilitate efficient 3D manipulation learning using vision-language integration. It leverages a **Large Language Model** as its core component, enhanced by an **Image Encoder** and **Text Tokenizer** to process multimodal inputs. The workflow is as follows:
-
-- **Input**: The model takes a **Static Image** and a **Gripper Image** along with an **Instruction** (e.g., "What action should the robot take to put the blue block into the drawer").
-- **Processing**: The **Image Encoder** processes the visual inputs, while the **Text Tokenizer** converts the instruction into a format suitable for the language model. These processed inputs are fed into the Large Language Model.
-- **Output**: The model generates a sequence of action tokens (e.g., \( a_t, a_{t+1}, a_{t+2}, \ldots, a_{t+m-1} \)) through an **Action De-Tokenizer**. These tokens are translated into actionable commands, including:
-  - **ΔT** (Translation changes, e.g., \([-0.9, 0.3, 0.1]\))
-  - **ΔR** (Rotation changes, e.g., \([2^\circ, 18^\circ, -9^\circ]\))
-  - **ΔGripper** (Gripper adjustments, multiplied by \( m \)).
-- **Execution**: The resulting actions are executed by the robot gripper, enabling precise 3D manipulation based on the input instruction and visual data.
-
-This architecture aligns input and output within a shared 2D space, enhancing data efficiency and performance in both basic and generalization settings.
+![Model Architecture](./images/pipline.png)
+The network architecture of our LLaVA-VLA. Given images, proprioception and language instructions, our method first tokenizes the input and then feeds the results into the LLM. The LLM outputs an action chunking, which are finally detokenized into valid action values and deployed on the mechanical arm.
 
 ## 📊Experimental Results
 <a id="experimental-results"></a>
