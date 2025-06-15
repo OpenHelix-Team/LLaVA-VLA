@@ -1,5 +1,7 @@
 # LLaVA-VLA: A Simple Yet Powerful Vision-Language-Action Model
 
+Contributor: Wenxuan Song, Jiayi Chen, Xiaoquan Sun, Wei Zhao, Pengxiang Ding
+
 We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built upon the popular open-source VLM [LLaVA](https://github.com/haotian-liu/LLaVA). This implementation combines accessibility with strong performance for robotic manipulation tasks. The key features lie in:
 
 1. 🏗️ **Minimalist design** - It is a vanilla VLA architecture without performance-hacking components. It is designed for easy modification and educational use. And it is also an ideal baseline for new researchers in embodied AI.
