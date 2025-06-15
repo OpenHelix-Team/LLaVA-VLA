@@ -173,15 +173,15 @@ evaluate_policy_multiserver.sh
 
 ## 🎓TODO
 <a id="todo"></a>
-abc
+Next, we will deploy our LLaVA-VLA on Robotwin！
 
 ## 🙏Acknowledgement
 <a id="acknowledgement"></a>
-abc
+The development of BridgeVLA has been built upon a strong foundation laid by previous work, and we have drawn great inspiration from numerous outstanding open-source projects in the field. We sincerely thank these projects and the dedicated developers behind them.
 
 ## ✉️Contact
 <a id="contact"></a>
-abc
+If you have any questions about the code, please contact your@gmail.com
 
 ## 📑Citation
 <a id="citation"></a>
