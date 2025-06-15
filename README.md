@@ -15,7 +15,6 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 
 ## 📌Contents
 - [Overview](#model-overview)
-- [Experimental Results](#Experimental-Results)
 - [Installation](#installation)
 - [Training](#training)
 - [Evaluation](#evaluation)
@@ -172,11 +171,11 @@ evaluate_policy_multiserver.sh
 
 ## 🎓TODO
 <a id="todo"></a>
-Next, we will deploy our LLaVA-VLA on Robotwin！
+Next, we will deploy LLaVA-VLA on Robotwin！
 
 ## 🙏Acknowledgement
 <a id="acknowledgement"></a>
-The development of BridgeVLA has been built upon a strong foundation laid by previous work, and we have drawn great inspiration from numerous outstanding open-source projects in the field. We sincerely thank these projects and the dedicated developers behind them.
+The development of LLaVA-VLA has been built upon a strong foundation laid by previous work, and we have drawn great inspiration from numerous outstanding open-source projects in the field. We sincerely thank these projects and the dedicated developers behind them.
 
 ## ✉️Contact
 <a id="contact"></a>
