@@ -1,6 +1,32 @@
-# LLaVA
+# LLaVA-VLA: A Simple Yet Powerful Vision-Language-Action Model
 
-Absbarts：A 3D VLA framework that aligns the input and output within a shared 2D space in both pre-training and fine-tuning, enabling strong data efficiency and achieves impressive performance in both basic and generalization settings.
+We present **LLaVA-VLA**, a new Vision-Language-Action model built upon the popular open-source VLM [LLaMA](https://llama.meta.com/). This implementation combines accessibility with strong performance for robotic manipulation tasks.
+
+## Key Features
+
+### 🏗️ Simple Architecture
+- Vanilla VLA structure **without complex add-ons**  
+- Designed for easy modification and educational use  
+- Ideal baseline for new researchers in embodied AI  
+
+### 🏆 Competitive Performance
+- Achieves **3.68% success rate** on [CALVIN](https://github.com/mees/calvin) benchmark  
+- Outperforms existing open-source VLAs (e.g., OpenVLA)  
+
+### 💸 Low Training Cost
+- **No pretraining required**  
+- Only **7 hours** of fine-tuning on [LLaVA-v1.5](https://llava-vl.github.io/) checkpoint  
+- Runs on consumer-grade GPUs (e.g., RTX 4090)  
+
+### 🔌 Seamless Extensibility
+- Built on the widely-used LLaMA ecosystem  
+- Compatible with most LLaMA-based tools and plugins  
+- Easy technology transfer to derivative projects  
+
+### 🔄 Active Maintenance
+- Regularly updated with bug fixes and improvements  
+- Community-driven development roadmap  
+
 
 ## 🔥News
 
