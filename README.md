@@ -158,16 +158,13 @@ deepspeed --include=localhost:0,1 yourpath/llava/train/calvin_train_obs.py \
 ```
 
 Below is an explanation of the most commonly adjusted training parameters：
-- model_name_or_path: ath or name of the pre-trained language model.
-- data_path: Path to the JSON file containing training data.
-- action_stat: Path to action normalization statistics.
-- num_train_epochs: Size of action discretization bins.
-- per_device_train_batch_size: Training batch size per GPU.
-- image_aspect_ratio: Image processing method.
-- num_train_epochs: otal number of training rounds.
-
-- <span style="background-color: #f5f5f5; padding: 2px 6px; border-radius: 4px;">model_name_or_path</span>: Path or name of the pre-trained language model.
-
+- `model_name_or_path`: Path or name of the pre-trained language model.
+- `data_path`: Path to the JSON file containing training data.
+- `action_stat`: Path to action normalization statistics.
+- `num_train_epochs`: Size of action discretization bins.
+- `per_device_train_batch_size`: Training batch size per GPU.
+- `image_aspect_ratio`: Image processing method.
+- `num_train_epochs`: otal number of training rounds.
 
 ## 🔬 Evaluation
 <a id="evaluation"></a>
