@@ -3,24 +3,45 @@
 ![Result Visualization](./images/exp.png)
 *Figure 1: Caption describing your key results (e.g., "Comparison of success rates across different methods")*
 
-# Install
+# Installation
 
+## Dependencies
+
+### Python versions:
+- Python 3.8, 3.10
+
+### Operating systems:
+- Linux: Ubuntu 18.04+, CentOS 7+
+
+### Hardware:
+- Rendering: NVIDIA or AMD GPU
+  - Recommended CUDA Version: 12.1
+- Ray tracing: NVIDIA RTX GPU or AMD equivalent
+- Ray-tracing Denoising: NVIDIA GPU
+- GPU Simulation: NVIDIA GPU
+
+### Software:
+- Ray tracing: NVIDIA Driver >= 470
+- Denoising (OIDN): NVIDIA Driver >= 520
+- CUDA Version: 12.1
+
+## Basic Env
 1. Clone this repository and navigate to LLaVA folder
 ```bash
 git clone https://github.com/haotian-liu/LLaVA.git
 cd LLaVA
 conda create -n llava python=3.10 -y
 conda activate llava
-pip install --upgrade pip  # enable PEP 660 support
+pip install --upgrade pip  
 pip install -e .
 ```
-
+## Dataset
 2. Clone and isntall Calvin
 ```bash
 git clone --recurse-submodules https://github.com/mees/calvin.git
 export CALVIN_ROOT=$(pwd)/calvin
 cd $CALVIN_ROOT
-conda create -n calvin_venv python=3.8  # or use virtualenv
+conda create -n calvin_venv python=3.8  
 conda activate calvin_venv
 sh install.sh
 ```
@@ -33,44 +54,13 @@ sh download_data.sh D | ABC | ABCD | debug
 4. Preprocess Calvin dataset
 ```bash
 cd vlas/scripts
-python /data/user/wsong890/user68/project/vlas/scripts/helper/calvin2json.py
+python yourpath/calvin2json.py
 ```
 
-This is a demonstration for running and testing:
-录制：Wenxuan的快速会议
-日期：2025-05-27 20:14:28
-录制文件：https://meeting.tencent.com/crm/l7LvjRQd7c
-
-# Prepare Data
-Please use scripts/helper/calvin2json.py. This file automatically:  
-- Stitches CALVIN's multi-view images  
-- Formats data to LLaVA template (image+text)  
-- Outputs: processed images + JSON
-Note: Configure output paths in scripts.
-
-# Core Codes
-The LLaVA/llava directory contains all model architecture files, training implementations, and server-side deployment components. Specifically:
-
-1. LLaVA/llava/model/ 
-   - Contains core model architecture files
-   - Key modification file: llava_arch.py (primary file to edit when customizing model architecture)
-   - Suggested workflow: Trace through this file's modifications to build custom model variants
-
-2. LLaVA/llava/train/
-   - Hosts training scripts
-   - Standard VLA fine-tuning on CALVIN dataset uses: calvin_train_obs.py
-   - Includes all necessary training utilities and configurations
-
-3. LLaVA/llava/serve/
-   - Contains production deployment modules
-   - Enables server-side model hosting for inference
-   - Client access via network API calls (REST/gRPC)
-
-# Train LLaVA-VLA
+# Train
 ```bash
-
 cd vlas
-bash ./scripts/train/calvin_finetune_obs.sh
+bash yourpath/scripts/train/calvin_finetune_obs.sh
 ```
 calvin_finetune_obs.sh
 ```bash
@@ -83,15 +73,15 @@ export WANDB_MODE=offline
 export WANDB_DIR=./wandb
 
 export PYTHONPATH=/data/user/wsong890/user68/project/vlas:$PYTHONPATH
-export MODEL_NAME_OR_PATH=/data/user/wsong890/user68/project/vlas/llava-v1.5-7b
-export OUTPUT_DIR=./checkpoints/llava-v1.5-7b-calvin-rel-obs-reduce5-v1-abcd2d_2024_03_14
-export CALVIN_PROCESSED_JSON_PATH=/data/user/wsong890/user68/data/calvin/calvin_processed_json
-export CALVIN_PROCESSED_DIRECTORY=/data/user/wsong890/user68/data/calvin_process/task_ABCD_D/vla_processed_r5
-export ACTION_STAT=/data/user/wsong890/user68/data/statistics.yaml
-export VISION_TOWER=/data/user/wsong890/user68/project/clip-vit-large-patch14-336
-export DEEPSPEED_CONFIG=/data/user/wsong890/user68/project/vlas/scripts/zero3.json
+export MODEL_NAME_OR_PATH=yourpath/vlas/llava-v1.5-7b
+export OUTPUT_DIR=yourpath
+export CALVIN_PROCESSED_JSON_PATH=yourpath/data/calvin/calvin_processed_json
+export CALVIN_PROCESSED_DIRECTORY=yourpath/data/calvin_process/task_ABCD_D/vla_processed_r5
+export ACTION_STAT=yourpath/data/statistics.yaml
+export VISION_TOWER=yourpath/project/clip-vit-large-patch14-336
+export DEEPSPEED_CONFIG=yourpath/project/vlas/scripts/zero3.json
 
-deepspeed --include=localhost:0,1 /data/user/wsong890/user68/project/vlas/llava/train/calvin_train_obs.py \
+deepspeed --include=localhost:0,1 yourpath/llava/train/calvin_train_obs.py \
     --deepspeed $DEEPSPEED_CONFIG \
     --model_name_or_path $MODEL_NAME_OR_PATH \
     --version v1 \
@@ -127,69 +117,24 @@ deepspeed --include=localhost:0,1 /data/user/wsong890/user68/project/vlas/llava/
     --report_to wandb \
     --report_to_wandb_project your_project_name \
     --report_to_wandb_run_name your_run_name
-
 ```
 
-# Evaluate LLaVA-VLA in Simulator
+# Evaluate LLaVA in Calvin
 
-start model server on you own port(here is 9097)
-
+start model server on you own port(here is 9097)，
+CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
 ```bash
-bash  /data/user/wsong890/user68/project/vlas/scripts/server/start_multi_server.sh
+bash  yourpath/vlas/scripts/server/start_multi_server.sh
 ```
 
 start_multi_server.sh
-```bash
-#!/bin/bash
-# trap "kill 0" EXIT
-CUDA_VISIBLE_DEVICES=0
-gpu_list="${CUDA_VISIBLE_DEVICES:-0}"
-IFS=',' read -ra GPULIST <<< "$gpu_list"
-CHUNKS=${#GPULIST[@]}
 
-for IDX in $(seq 0 $((CHUNKS-1))); do
-    port=$(($IDX+9097))
-    echo "Running port $port on GPU ${GPULIST[$IDX]}"
-    CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python  ./llava/serve/flask_server.py \
-        --model-path  ./checkpoints/llava_checkpoint-21572\
-        --action_stat /share/user/iperror/data/calvin/task_ABCD_D/training/statistics.yaml \
-        --port $port 
-done
-wait
-
-```
 start calvin client
 ```bash
-bash /data/user/wsong890/user68/project/calvin/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
+bash yourpath/calvin/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
 
 ```
 evaluate_policy_multiserver.sh
 
-```bash
-#!/bin/bash
-# export CUDA_VISIBLE_DEVICES=1
-source ~/user68/conda_env/calvin_venv/bin/activate
-export EGL_VISIBLE_DEVICES=0
-trap "kill 0" EXIT
-PORTSLIST=(9097)
-export PYTHONPATH=/data/user/wsong890/user68/project/calvin:$PYTHONPATH
-export PYTHONPATH=/data/user/wsong890/user68/project/calvin/calvin_env:$PYTHONPATH
-export PYTHONPATH=/data/user/wsong890/user68/project/calvin/calvin/calvin_env/tacto:$PYTHONPATH
-EVAL_LOG_DIR="/data/user/wsong890/user68/project/calvin/calvin_models/calvin_agent/evaluation/log"
-CHUNKS=${#PORTSLIST[@]}
 
-for IDX in $(seq 0 $((CHUNKS-1))); do
-    python /data/user/wsong890/user68/project/calvin/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.py \
-        --dataset_path /share/user/iperror/data/calvin/task_ABCD_D \
-        --question_file  /data/user/wsong890/user68/project/calvin/calvin_models/calvin_agent/evaluation/evaluation_sequence/questions/question.json\
-        --eval_log_dir $EVAL_LOG_DIR \
-        --num_chunks $CHUNKS \
-        --chunk_idx $IDX \
-        --port ${PORTSLIST[$IDX]} \
-        --custom_model 
-done
-
-wait
-
-```
 
