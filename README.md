@@ -1,11 +1,11 @@
-# LLaVA:Input-Output Alignment for Efficient 3D Manipulation Learning with Vision-Language Models
+# LLaVA
 
-A 3D VLA framework that aligns the input and output within a shared 2D space in both pre-training and fine-tuning, enabling strong data efficiency and achieves impressive performance in both basic and generalization settings.
+Absbarts：A 3D VLA framework that aligns the input and output within a shared 2D space in both pre-training and fine-tuning, enabling strong data efficiency and achieves impressive performance in both basic and generalization settings.
 
-# News
+# 🔥News
 
 - **2025.06.15** 🌟 We are proud to introduce LLaVA, a model designed to balabala.
-- 
+
 # Results
 
 ![Result Visualization](./images/exp.png)
