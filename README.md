@@ -27,11 +27,13 @@ We introduce **LLaVA-VLA**, a lightweight Vision-Language-Action model based on 
 
 ## Model Overview
 <a id="model-overview"></a>
+![Result Visualization](./images/pipline.png)
+*Figure 1: Caption describing your key results
 
 ## Experimental Results
 <a id="experimental-results"></a>
 ![Result Visualization](./images/exp.png)
-*Figure 1: Caption describing your key results (e.g., "Comparison of success rates across different methods")*
+*Figure 2: Caption describing your key results (e.g., "Comparison of success rates across different methods")*
 
 ## Installation
 <a id="installation"></a>
