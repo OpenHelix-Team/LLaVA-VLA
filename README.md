@@ -166,7 +166,7 @@ Below is an explanation of the most commonly adjusted training parameters：
 - image_aspect_ratio: Image processing method.
 - num_train_epochs: otal number of training rounds.
 
-- <span style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 4px;">model_name_or_path</span>: Path or name of the pre-trained language model.
+- <span style="background-color: #f5f5f5; padding: 2px 6px; border-radius: 4px;">model_name_or_path</span>: Path or name of the pre-trained language model.
 
 
 ## 🔬 Evaluation
