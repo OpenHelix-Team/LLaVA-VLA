@@ -39,6 +39,13 @@ The network architecture of our LLaVA-VLA. Given images, proprioception and lang
 LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the simple structure, it outperforms several popular strong baselines that rely on large-scale pre-training and complex structures.
 ![Result Visualization](./images/exp.png)
 
+## Key Designs
+1.	Concatenated Multi-view Images:
+In manipulation tasks, third-person view images often provide global contextual information, while first-person view images offer precise object-to-gripper positional cues, which are crucial for achieving high-precision manipulation. Therefore, incorporating both perspectives is essential. Several strategies exist for handling multi-view inputs. Encoding each image separately and then concatenating their tokens typically leads to an excessive number of image tokens and introduces considerable redundancy, resulting in suboptimal performance—a phenomenon also observed in [RoboVLM](https://github.com/Robot-VLAs/RoboVLMs). One potential remedy is to apply a Perceiver Resampler to reduce visual token count; however, this approach may incur information loss, which our empirical results confirmed through poor performance. Consequently, we adopt a simpler yet effective strategy: vertically concatenating the first- and third-person view images into a single composite image. This approach not only reduces the number of tokens while preserving complete multi-view visual information, but also aligns with the training paradigm of LLaVA, thereby avoiding potential performance degradation.
+2.	Proprioception as Input:
+Proprioceptive information is critical for enabling robots to infer their current state and maintain action continuity. A common approach is to extract this information using an MLP. In our design, we encode proprioception directly into the same embedding space as the action tokens via an action tokenizer. This integration facilitates better exploitation of the VLM’s language modeling capabilities for understanding and generating coherent actions.
+3.	Action Chunking:
+Action chunking plays a pivotal role in manipulation tasks. Training the vision-language-action (VLA) model to predict action chunks implicitly endows it with planning capabilities and improves the temporal coherence of the generated actions. In our implementation, we set the action chunking size to 5.
 
 ## 💾 Installation
 <a id="installation"></a>
