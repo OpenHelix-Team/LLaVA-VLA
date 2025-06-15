@@ -32,7 +32,7 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 
 ## 📊 Overview
 <a id="model-overview"></a>
-![Model Architecture](./images/LLaVA_pipline.png)
+![Model Architecture](./images/LLaVA_pipline2.png)
 The network architecture of our LLaVA-VLA. Given images, proprioception and language instructions, our method first tokenizes the input and then feeds the results into the LLM. The LLM outputs an action chunking, which are finally detokenized into valid action values and deployed on the mechanical arm.
 
 <a id="experimental-results"></a>
