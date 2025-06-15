@@ -19,7 +19,7 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 - [ ] Release real-world demo.
 - [ ] Release models based on more baselines.
 
-## 📌Contents
+## 📌 Contents
 - [Overview](#model-overview)
 - [Installation](#installation)
 - [Training](#training)
@@ -30,7 +30,7 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 - [Contact](#contact)
 - [Citation](#citation)
 
-## 📊Overview
+## 📊 Overview
 <a id="model-overview"></a>
 ![Model Architecture](./images/LLaVA_pipline.png)
 The network architecture of our LLaVA-VLA. Given images, proprioception and language instructions, our method first tokenizes the input and then feeds the results into the LLM. The LLM outputs an action chunking, which are finally detokenized into valid action values and deployed on the mechanical arm.
@@ -40,7 +40,7 @@ LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the si
 ![Result Visualization](./images/exp.png)
 
 
-## 💾Installation
+## 💾 Installation
 <a id="installation"></a>
 
 ### Dependencies
@@ -49,14 +49,10 @@ LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the si
 - Python 3.8, 3.10
 
 #### Operating systems:
-- Linux: Ubuntu 18.04+, CentOS 7+
+- Linux: Ubuntu 18.04+
 
 #### Hardware:
-- Rendering: NVIDIA or AMD GPU
-  - Recommended CUDA Version: 12.1
-- Ray tracing: NVIDIA RTX GPU or AMD equivalent
-- Ray-tracing Denoising: NVIDIA GPU
-- GPU Simulation: NVIDIA GPU
+- NVIDIA RTX GPU or AMD equivalent
 
 #### Software:
 - Ray tracing: NVIDIA Driver >= 470
@@ -95,8 +91,9 @@ cd vlas/scripts
 python yourpath/calvin2json.py
 ```
 
-## 📈Training
+## 📈 Training
 <a id="training"></a>
+If you have multiple GPUs and wish to use PyTorch's Distributed Data Parallel, simply set the number in the command below to match the number of available GPUs(CUDA_VISIBLE_DEVICES and localhost).
 ```bash
 cd vlas
 bash yourpath/scripts/train/calvin_finetune_obs.sh
@@ -158,28 +155,34 @@ deepspeed --include=localhost:0,1 yourpath/llava/train/calvin_train_obs.py \
     --report_to_wandb_run_name your_run_name
 ```
 
-## 🔬Evaluation
+Below is an explanation of the most commonly adjusted training parameters：
+- num_train_epochs：	Size of action discretization bins.
+- per_device_train_batch_size:Training batch size per GPU.
+- image_aspect_ratio:Image processing method.
+- num_train_epochs:otal number of training rounds.
+
+## 🔬 Evaluation
 <a id="evaluation"></a>
-start model server on you own port(here is 9097)，
-CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
+In one Terminal window (e.g., in tmux), run the robot server:
 ```bash
 bash  yourpath/vlas/scripts/server/start_multi_server.sh
 ```
-
+tart model server on you own port(here is 9097)，
+CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
 start_multi_server.sh
 
-start calvin client
+In a third Terminal window, run the LLaVA-VLA policy evaluation script:
 ```bash
 bash yourpath/calvin/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
 
 ```
 evaluate_policy_multiserver.sh
 
-## 🙏Acknowledgement
+## 🙏 Acknowledgement
 <a id="acknowledgement"></a>
 The development of LLaVA-VLA has been built upon a strong foundation laid by previous work, and we have drawn great inspiration from numerous outstanding open-source projects in the field. We sincerely thank these projects and the dedicated developers behind them.
 
-## ✉️Contact
+## ✉️ Contact
 <a id="contact"></a>
 If you have any questions about the code, please contact your@gmail.com
 
