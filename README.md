@@ -11,8 +11,8 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 5. 🔄 **Active maintenance** - We will continuously improve it with new functions and environments.
 
 
-## 🔥News
-- **2025.06.15** 🌟 We are proud to introduce LLaVA, a model designed to balabala.
+## News
+- **2025.06.17** 🌟 We release training codes, test codes, and check points of LLaVA-VLA.
 
 ## TODO
 - [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm.
