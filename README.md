@@ -170,7 +170,7 @@ Below is an explanation of the most commonly adjusted training parameters：
 - per_device_train_batch_size: Training batch size per GPU.
 - image_aspect_ratio: Image processing method.
 - num_train_epochs: otal number of training rounds.
-zhge
+
 ## 🔬 Evaluation
 <a id="evaluation"></a>
 In one Terminal window (e.g., in tmux), run the robot server:
@@ -184,9 +184,7 @@ start_multi_server.sh
 In a third Terminal window, run the LLaVA-VLA policy evaluation script:
 ```bash
 bash yourpath/calvin/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
-
 ```
-evaluate_policy_multiserver.sh
 
 ## 🙏 Acknowledgement
 <a id="acknowledgement"></a>
