@@ -58,12 +58,7 @@ Action chunking plays a pivotal role in manipulation tasks. Training the vision-
 #### Operating systems:
 - Linux: Ubuntu 18.04+
 
-#### Hardware:
-- NVIDIA RTX GPU or AMD equivalent
-
 #### Software:
-- Ray tracing: NVIDIA Driver >= 470
-- Denoising (OIDN): NVIDIA Driver >= 520
 - CUDA Version: 12.1
 
 ### Basic Env
@@ -77,7 +72,7 @@ pip install --upgrade pip
 pip install -e .
 ```
 ### Dataset
-2. Clone and install Calvin
+2. Clone and install CALVIN
 ```bash
 git clone --recurse-submodules https://github.com/mees/calvin.git
 export CALVIN_ROOT=$(pwd)/calvin
@@ -87,14 +82,14 @@ conda activate calvin_venv
 sh install.sh
 ```
 
-3. Download Calvin  dataset
+3. Download CALVIN dataset
 ```bash
 cd $CALVIN_ROOT/dataset
 sh download_data.sh ABC
 ```
-4. Preprocess Calvin dataset
+4. Preprocess CALVIN dataset
 ```bash
-cd vlas/scripts
+cd LLaVA-VLA/scripts
 python yourpath/calvin2json.py
 ```
 
@@ -102,7 +97,7 @@ python yourpath/calvin2json.py
 <a id="training"></a>
 If you have multiple GPUs and wish to use PyTorch's Distributed Data Parallel, simply set the number in the command below to match the number of available GPUs(CUDA_VISIBLE_DEVICES and localhost).
 ```bash
-cd vlas
+cd LLaVA-VLA
 bash yourpath/scripts/train/calvin_finetune_obs.sh
 ```
 calvin_finetune_obs.sh
@@ -170,6 +165,9 @@ Below is an explanation of the most commonly adjusted training parameters：
 - per_device_train_batch_size: Training batch size per GPU.
 - image_aspect_ratio: Image processing method.
 - num_train_epochs: otal number of training rounds.
+
+- <span style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 4px;">model_name_or_path</span>: Path or name of the pre-trained language model.
+
 
 ## 🔬 Evaluation
 <a id="evaluation"></a>
