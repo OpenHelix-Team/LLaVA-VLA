@@ -61,7 +61,7 @@ Action chunking plays a pivotal role in manipulation tasks. Training the vision-
 
 | Method   | VLM               | Checkpoint |
 |----------|-------------------|---:|
-| LLaVA-VLA  | llava-v1.5-7b |[HF](https://huggingface.co/datasets/chenpyyy/LLaVA-VLA) | 
+| LLaVA-VLA  | llava-v1.5-7b |[HF](https://huggingface.co/chenpyyy/LLaVA-VLA) | 
 
 ### Basic Env
 1. Clone this repository and navigate to LLaVA folder
