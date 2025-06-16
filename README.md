@@ -182,7 +182,7 @@ The whole evaluation process could be conducted on 1 NVIDIA 4090 GPU (24G), try 
 First, run the LLaVA-VLA policy evaluation script:
 ```
 cd LLaVA-VLA
-bash ./CALVIN/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
+bash ./calvin_test/evaluate_policy_multiserver.sh
 ```
 Below is an explanation of the most commonly adjusted parameters:
 - `dataset_path`: Path to the root directory of the dataset.
