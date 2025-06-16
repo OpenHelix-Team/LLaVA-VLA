@@ -60,6 +60,12 @@ Action chunking plays a pivotal role in manipulation tasks. Training the vision-
 
 #### Software:
 - CUDA Version: 12.1
+- 
+## Model Zoo
+
+| Method   | VLM               | Checkpoint |
+|----------|-------------------|---:|
+| LLaVA-VLA  | llava-7b |[HF](https://huggingface.co/datasets/chenpyyy/LLaVA-VLA) | 
 
 ### Basic Env
 1. Clone this repository and navigate to LLaVA folder
