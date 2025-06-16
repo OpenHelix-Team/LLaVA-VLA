@@ -178,7 +178,7 @@ Below is an explanation of the most commonly adjusted training parameters：
 
 First, run the LLaVA-VLA policy evaluation script:
 ```
-bash  yourpath/LLaVA-VLA/scripts/server/start_multi_server.sh
+bash yourpath/CALVIN/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
 ```
 Below is an explanation of the most commonly adjusted parameters:
 - `dataset_path`: Path to the root directory of the dataset.
@@ -195,7 +195,7 @@ conda activate calvin_venv
 ```
 Then run the robot server:
 ```
-bash yourpath/CALVIN/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
+bash  yourpath/LLaVA-VLA/scripts/server/start_multi_server.sh
 ```
 tart model server on you own port(here is 9097)，
 CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
