@@ -75,7 +75,7 @@ pip install -e .
 2. Clone and install CALVIN
 ```bash
 git clone --recurse-submodules https://github.com/mees/calvin.git
-export CALVIN_ROOT=$(pwd)/calvin
+export CALVIN_ROOT=$(pwd)/CALVIN
 cd $CALVIN_ROOT
 conda create -n calvin_venv python=3.8  
 conda activate calvin_venv
@@ -110,11 +110,11 @@ echo $PATH
 export WANDB_MODE=offline
 export WANDB_DIR=./wandb
 
-export PYTHONPATH=/data/user/wsong890/user68/project/vlas:$PYTHONPATH
-export MODEL_NAME_OR_PATH=yourpath/vlas/llava-v1.5-7b
+export PYTHONPATH=yourpath/LLaVA-VLA:$PYTHONPATH
+export MODEL_NAME_OR_PATH=yourpath/LLaVA/llava-v1.5-7b
 export OUTPUT_DIR=yourpath
-export CALVIN_PROCESSED_JSON_PATH=yourpath/data/calvin/calvin_processed_json
-export CALVIN_PROCESSED_DIRECTORY=yourpath/data/calvin_process/task_ABCD_D/vla_processed_r5
+export CALVIN_PROCESSED_JSON_PATH=yourpath/data/CALVIN/calvin_processed_json
+export CALVIN_PROCESSED_DIRECTORY=yourpath/data/CALVIN_process/task_ABCD_D/vla_processed_r5
 export ACTION_STAT=yourpath/data/statistics.yaml
 export VISION_TOWER=yourpath/project/clip-vit-large-patch14-336
 export DEEPSPEED_CONFIG=yourpath/project/vlas/scripts/zero3.json
@@ -181,7 +181,7 @@ Below is an explanation of the most commonly adjusted parameters:
 
 In a third Terminal window, run the LLaVA-VLA policy evaluation script:
 ```bash
-bash yourpath/calvin/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
+bash yourpath/CALVIN/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
 ```
 Below is an explanation of the most commonly adjusted parameters:
 - `dataset_path`: Path to the root directory of the dataset.
