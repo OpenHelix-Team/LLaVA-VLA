@@ -177,7 +177,7 @@ Below is an explanation of the most commonly adjusted training parameters：
 ## 🔬 Evaluation
 
 First, run the LLaVA-VLA policy evaluation script:
-```bash
+```
 bash  yourpath/LLaVA-VLA/scripts/server/start_multi_server.sh
 ```
 Below is an explanation of the most commonly adjusted parameters:
@@ -194,7 +194,7 @@ In the second Terminal window, switch the environment:
 conda activate calvin_venv
 ```
 Then run the robot server:
-```bash
+```
 bash yourpath/CALVIN/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
 ```
 tart model server on you own port(here is 9097)，
