@@ -35,7 +35,7 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 - [ ] Support training with LoRA on NVIDIA 4090 GPU.
 - [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm.
 - [ ] Release real-world demo.
-- [ ] Release models based on smaller baselines (e.g., Qwen-0.5b) and more advanced baselines (e.g., LLaVA-OneVision/Qwen 2.5).
+- [ ] Release models based on smaller baselines (e.g., Qwen 2.5-0.5b) and more advanced baselines (e.g., LLaVA-OneVision/Qwen 2.5-7b).
 
 <a id="model-overview"></a>
 ## 📊 Overview
