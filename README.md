@@ -90,8 +90,8 @@ sh download_data.sh ABC
 ```
 4. Preprocess CALVIN dataset. This step will output a JSON file formatted for VLA training and a processed folder containing stitched images. You can manually modify the save path, but please ensure to use the data from the correct path during training/testing.
 ```bash
-cd LLaVA-VLA/scripts
-python yourpath/calvin2json.py
+cd LLaVA-VLA
+python ./scripts/helper/calvin2json.py
 ```
 <a id="modelzoo"></a>
 ## 📦 Model Zoo
@@ -106,7 +106,7 @@ LLaVA-VLA is trained on 8 A100 GPUs with 80GB memory. To train on fewer GPUs, yo
 If you have multiple GPUs and wish to use PyTorch's Distributed Data Parallel, simply set the number in the command below to match the number of available GPUs(CUDA_VISIBLE_DEVICES and localhost).
 ```bash
 cd LLaVA-VLA
-bash yourpath/scripts/train/calvin_finetune_obs.sh
+bash ./scripts/train/calvin_finetune_obs.sh
 ```
 calvin_finetune_obs.sh
 ```bash
@@ -181,7 +181,8 @@ The whole evaluation process could be conducted on 1 NVIDIA 4090 GPU (24G), try 
 
 First, run the LLaVA-VLA policy evaluation script:
 ```
-bash yourpath/CALVIN/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
+cd LLaVA-VLA
+bash ./CALVIN/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
 ```
 Below is an explanation of the most commonly adjusted parameters:
 - `dataset_path`: Path to the root directory of the dataset.
@@ -198,7 +199,8 @@ conda activate calvin_venv
 ```
 Then run the robot server:
 ```
-bash  yourpath/LLaVA-VLA/scripts/server/start_multi_server.sh
+cd LLaVA-VLA
+bash  ./scripts/server/start_multi_server.sh
 ```
 tart model server on you own port(here is 9097)，
 CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
