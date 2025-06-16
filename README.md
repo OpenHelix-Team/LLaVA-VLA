@@ -50,16 +50,10 @@ Action chunking plays a pivotal role in manipulation tasks. Training the vision-
 <a id="installation"></a>
 
 ### Dependencies
+#### Python versions: Python 3.8+
+#### Operating systems: Linux: Ubuntu 18.04+
+#### Software: CUDA Version: 12.1
 
-#### Python versions:
-- Python 3.8, 3.10
-
-#### Operating systems:
-- Linux: Ubuntu 18.04+
-
-#### Software:
-- CUDA Version: 12.1
-- 
 ## Model Zoo
 
 | Method   | VLM               | Checkpoint |
