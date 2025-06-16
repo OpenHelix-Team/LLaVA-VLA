@@ -200,7 +200,7 @@ The development of LLaVA-VLA has been built upon a strong foundation laid by pre
 
 ## ✉️ Contact
 If you have any questions about the code, please propose issues, pull requests, or directly contact wsong890@connect.hkust-gz.edu.cn, 1952296@tongji.edu.cn, sunxiaoquan2002@gmail.com.
-Please feel free to add my WeChat:
+Please feel free to add my WeChat:<br>
 <img src="./images/wechat.jpg" alt="wx" width="30%"/>
 
 <a id="citation"></a>
