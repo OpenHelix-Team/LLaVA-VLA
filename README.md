@@ -175,6 +175,9 @@ bash  yourpath/vlas/scripts/server/start_multi_server.sh
 tart model server on you own port(here is 9097)，
 CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
 start_multi_server.sh
+Below is an explanation of the most commonly adjusted evaluation parameters：
+- `model_path`: Path to the model checkpoint.
+- `action_stat`:	Action normalization stats.
 
 In a third Terminal window, run the LLaVA-VLA policy evaluation script:
 ```bash
