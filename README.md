@@ -11,20 +11,23 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 5. 🔄 **Active maintenance** - We will continuously improve it with new functions and environments.
 
 ## 📌 Contents
+- [New](#new)
+- [TODO](#todo)
 - [Overview](#model-overview)
+- [Key Design](#key-design)
 - [Installation](#installation)
 - [Training](#training)
 - [Evaluation](#evaluation)
-- [Experimental Results](#experimental-results)
-- [TODO](#todo)
 - [Acknowledgement](#acknowledgement)
 - [Contact](#contact)
 - [Citation](#citation)
 
-## News
+## 🔥 News
+<a id="new"></a>
 - **2025.06.17** 🌟 We release training codes, test codes, and checkpoints of LLaVA-VLA.
 
-## TODO
+## 📝 TODO
+<a id="todo"></a>
 - [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm.
 - [ ] Release real-world demo.
 - [ ] Release models based on more baselines.
@@ -38,7 +41,8 @@ The network architecture of our LLaVA-VLA. Given images, proprioception and lang
 LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the simple structure, it outperforms several popular strong baselines that rely on large-scale pre-training and complex structures.
 ![Result Visualization](./images/exp.png)
 
-## Key Designs
+## ⭐ Key Designs
+<a id="key-design"></a>
 1.	Concatenated Multi-view Images:
 In manipulation tasks, third-person view images often provide global contextual information, while first-person view images offer precise object-to-gripper positional cues, which are crucial for achieving high-precision manipulation. Therefore, incorporating both perspectives is essential. Several strategies exist for handling multi-view inputs. Encoding each image separately and then concatenating their tokens typically leads to an excessive number of image tokens and introduces considerable redundancy, resulting in suboptimal performance—a phenomenon also observed in [RoboVLM](https://github.com/Robot-VLAs/RoboVLMs). One potential remedy is to apply a Perceiver Resampler to reduce visual token count; however, this approach may incur information loss, which our empirical results confirmed through poor performance. Consequently, we adopt a simpler yet effective strategy: vertically concatenating the first- and third-person view images into a single composite image. This approach not only reduces the number of tokens while preserving complete multi-view visual information, but also aligns with the training paradigm of LLaVA, thereby avoiding potential performance degradation.
 2.	Proprioception as Input:
