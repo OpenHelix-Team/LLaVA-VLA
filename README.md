@@ -22,18 +22,18 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 - [Contact](#contact)
 - [Citation](#citation)
 
-## 🔥 News
 <a id="new"></a>
+## 🔥 News
 - **2025.06.17** 🌟 We release training codes, test codes, and checkpoints of LLaVA-VLA.
 
-## 📝 TODO
 <a id="todo"></a>
+## 📝 TODO
 - [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm.
 - [ ] Release real-world demo.
 - [ ] Release models based on more baselines.
 
-## 📊 Overview
 <a id="model-overview"></a>
+## 📊 Overview
 ![Model Architecture](./images/LLaVA_pipline2.png)
 The network architecture of our LLaVA-VLA. Given images, proprioception and language instructions, our method first tokenizes the input and then feeds the results into the LLM. The LLM outputs an action chunking, which are finally detokenized into valid action values and deployed on the mechanical arm.
 
@@ -41,8 +41,8 @@ The network architecture of our LLaVA-VLA. Given images, proprioception and lang
 LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the simple structure, it outperforms several popular strong baselines that rely on large-scale pre-training and complex structures.
 ![Result Visualization](./images/exp.png)
 
-## ⭐ Key Designs
 <a id="key-design"></a>
+## ⭐ Key Designs
 1.	Concatenated Multi-view Images:
 In manipulation tasks, third-person view images often provide global contextual information, while first-person view images offer precise object-to-gripper positional cues, which are crucial for achieving high-precision manipulation. Therefore, incorporating both perspectives is essential. Several strategies exist for handling multi-view inputs. Encoding each image separately and then concatenating their tokens typically leads to an excessive number of image tokens and introduces considerable redundancy, resulting in suboptimal performance—a phenomenon also observed in [RoboVLM](https://github.com/Robot-VLAs/RoboVLMs). One potential remedy is to apply a Perceiver Resampler to reduce visual token count; however, this approach may incur information loss, which our empirical results confirmed through poor performance. Consequently, we adopt a simpler yet effective strategy: vertically concatenating the first- and third-person view images into a single composite image. This approach not only reduces the number of tokens while preserving complete multi-view visual information, but also aligns with the training paradigm of LLaVA, thereby avoiding potential performance degradation.
 2.	Proprioception as Input:
@@ -50,9 +50,8 @@ Proprioceptive information is critical for enabling robots to infer their curren
 3.	Action Chunking:
 Action chunking plays a pivotal role in manipulation tasks. Training the vision-language-action (VLA) model to predict action chunks implicitly endows it with planning capabilities and improves the temporal coherence of the generated actions. In our implementation, we set the action chunking size to 5.
 
-## 💾 Installation
 <a id="installation"></a>
-
+## 💾 Installation
 ### Dependencies
 #### Python versions: Python 3.8+
 #### Operating systems: Linux: Ubuntu 18.04+
@@ -96,8 +95,8 @@ cd LLaVA-VLA/scripts
 python yourpath/calvin2json.py
 ```
 
-## 📈 Training
 <a id="training"></a>
+## 📈 Training
 If you have multiple GPUs and wish to use PyTorch's Distributed Data Parallel, simply set the number in the command below to match the number of available GPUs(CUDA_VISIBLE_DEVICES and localhost).
 ```bash
 cd LLaVA-VLA
@@ -169,8 +168,8 @@ Below is an explanation of the most commonly adjusted training parameters：
 - `image_aspect_ratio`: Image processing method.
 - `num_train_epochs`: otal number of training rounds.
 
-## 🔬 Evaluation
 <a id="evaluation"></a>
+## 🔬 Evaluation
 In one Terminal window (e.g., in tmux), run the robot server:
 ```bash
 bash  yourpath/LLaVA-VLA/scripts/server/start_multi_server.sh
@@ -192,16 +191,16 @@ Below is an explanation of the most commonly adjusted parameters:
 - `num_chunks`: Number of chunks to split tasks into for parallel processing.
 - `chunk_idx`: Index of current chunk.
 - `save_dir`: Directory to save inference results.
-
-## 🙏 Acknowledgement
+- 
 <a id="acknowledgement"></a>
+## 🙏 Acknowledgement
 The development of LLaVA-VLA has been built upon a strong foundation laid by previous work, and we have drawn great inspiration from numerous outstanding open-source projects in the field. We sincerely thank these projects and the dedicated developers behind them.
 
-## ✉️ Contact
 <a id="contact"></a>
+## ✉️ Contact
 If you have any questions about the code, please contact sunxiaoquan2002@gmail.com
 
-## 📑Citation
 <a id="citation"></a>
+## 📑Citation
 abc
 
