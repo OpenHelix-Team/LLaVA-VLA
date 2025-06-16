@@ -194,13 +194,21 @@ Below is an explanation of the most commonly adjusted parameters:
 - 
 <a id="acknowledgement"></a>
 ## 🙏 Acknowledgement
-The development of LLaVA-VLA has been built upon a strong foundation laid by previous work, and we have drawn great inspiration from numerous outstanding open-source projects in the field. We sincerely thank these projects and the dedicated developers behind them.
+The development of LLaVA-VLA has been built upon a strong foundation laid by previous work: [LLaVA](https://github.com/haotian-liu/LLaVA), [VLAS](https://arxiv.org/abs/2502.13508), [CALVIN](https://github.com/mees/calvin), [OpenVLA](https://github.com/openvla/openvla)
 
 <a id="contact"></a>
+
 ## ✉️ Contact
-If you have any questions about the code, please contact sunxiaoquan2002@gmail.com
+If you have any questions about the code, please propose issues, pull requests, or directly contact wsong890@connect.hkust-gz.edu.cn, 1952296@tongji.edu.cn, sunxiaoquan2002@gmail.com.
 
 <a id="citation"></a>
 ## 📑Citation
-abc
-
+We are writing the technical report for this project. Before that, you could kindly cite our IROS2025 paper:
+```
+@article{pdvla,
+  title={Accelerating Vision-Language-Action Model Integrated with Action Chunking via Parallel Decoding},
+  author={Song, Wenxuan and Chen, Jiayi and Ding, Pengxiang and Zhao, Han and Zhao, Wei and Zhong, Zhide and Ge, Zongyuan and Ma, Jun and Li, Haoang},
+  journal={arXiv preprint arXiv:2503.02310},
+  year={2025}
+}
+```
