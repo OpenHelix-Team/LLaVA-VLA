@@ -88,7 +88,7 @@ sh install.sh
 cd $CALVIN_ROOT/dataset
 sh download_data.sh ABC
 ```
-4. Preprocess CALVIN dataset
+4. Preprocess CALVIN dataset. This step will output a JSON file formatted for VLA training and a processed folder containing stitched images. You can manually modify the save path, but please ensure to use the data from the correct path during training/testing.
 ```bash
 cd LLaVA-VLA/scripts
 python yourpath/calvin2json.py
@@ -176,6 +176,8 @@ Below is an explanation of the most commonly adjusted training parameters：
 
 <a id="evaluation"></a>
 ## 🔬 Evaluation
+
+The whole evaluation process could be conducted on 1 NVIDIA 4090 GPU (24G), try it!
 
 First, run the LLaVA-VLA policy evaluation script:
 ```
