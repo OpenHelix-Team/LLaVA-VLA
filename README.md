@@ -171,7 +171,7 @@ Below is an explanation of the most commonly adjusted training parameters：
 
 <a id="evaluation"></a>
 ## 🔬 Evaluation
-Please note that we will switch the environment to calvin_venv here.
+Please note that we will switch the environment to `calvin_venv` here.
 In one Terminal window (e.g., in tmux), run the robot server:
 ```bash
 bash  yourpath/LLaVA-VLA/scripts/server/start_multi_server.sh
