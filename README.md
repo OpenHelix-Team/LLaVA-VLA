@@ -1,6 +1,7 @@
 # LLaVA-VLA: A Simple Yet Powerful Vision-Language-Action Model
 
->Our repo aims to open-source a VLA baseline with simple structure, strong performance, and easy extensibility, serving as a good VLA baseline for beginners and senior researchers.
+>Our repo aims to open-source a VLA with simple structure, strong performance, and easy extensibility, serving as a good baseline for beginners and senior researchers.
+>我们的repo旨在开源一个结构简单，性能强劲，易于扩展的vla基线，方便初学者以及需要合适基线的研究者使用。
 
 Core contributors: [Wenxuan Song](https://github.com/Songwxuan), Jiayi Chen, Xiaoquan Sun, Wei Zhao, [Pengxiang Ding](https://dingpx.github.io/)
 
