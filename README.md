@@ -104,7 +104,7 @@ calvin_finetune_obs.sh
 ```bash
 #!/bin/bash
 source ~/user68/conda_env/llava/bin/activate 
-# export CUDA_VISIBLE_DEVICES=0,1,2
+# export CUDA_VISIBLE_DEVICES=0,1
 which python
 echo $PATH
 export WANDB_MODE=offline
@@ -119,7 +119,7 @@ export ACTION_STAT=yourpath/data/statistics.yaml
 export VISION_TOWER=yourpath/project/clip-vit-large-patch14-336
 export DEEPSPEED_CONFIG=yourpath/project/vlas/scripts/zero3.json
 
-deepspeed --include=localhost:0,1 yourpath/llava/train/calvin_train_obs.py \
+deepspeed --include=localhost:0,1 yourpath/LLaVA-VLA/train/calvin_train_obs.py \
     --deepspeed $DEEPSPEED_CONFIG \
     --model_name_or_path $MODEL_NAME_OR_PATH \
     --version v1 \
@@ -170,19 +170,25 @@ Below is an explanation of the most commonly adjusted training parameters：
 <a id="evaluation"></a>
 In one Terminal window (e.g., in tmux), run the robot server:
 ```bash
-bash  yourpath/vlas/scripts/server/start_multi_server.sh
+bash  yourpath/LLaVA-VLA/scripts/server/start_multi_server.sh
 ```
 tart model server on you own port(here is 9097)，
 CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
-start_multi_server.sh
-Below is an explanation of the most commonly adjusted evaluation parameters：
+
+Below is an explanation of the most commonly adjusted parameters:
 - `model_path`: Path to the model checkpoint.
-- `action_stat`:	Action normalization stats.
+- `action_stat`: Action normalization stats.
 
 In a third Terminal window, run the LLaVA-VLA policy evaluation script:
 ```bash
 bash yourpath/calvin/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
 ```
+Below is an explanation of the most commonly adjusted parameters:
+- `dataset_path`: Path to the root directory of the dataset.
+- `question_file`: Path to JSON file containing task descriptions or questions.
+- `num_chunks`: Number of chunks to split tasks into for parallel processing.
+- `chunk_idx`: Index of current chunk.
+- `save_dir`: Directory to save inference results.
 
 ## 🙏 Acknowledgement
 <a id="acknowledgement"></a>
@@ -190,7 +196,7 @@ The development of LLaVA-VLA has been built upon a strong foundation laid by pre
 
 ## ✉️ Contact
 <a id="contact"></a>
-If you have any questions about the code, please contact your@gmail.com
+If you have any questions about the code, please contact sunxiaoquan2002@gmail.com
 
 ## 📑Citation
 <a id="citation"></a>
