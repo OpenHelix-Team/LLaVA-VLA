@@ -57,7 +57,7 @@ Action chunking plays a pivotal role in manipulation tasks. Training the vision-
 #### Operating systems: Linux: Ubuntu 18.04+
 #### Software: CUDA Version: 12.1
 
-## Model Zoo
+### Model Zoo
 
 | Method   | VLM               | Checkpoint |
 |----------|-------------------|---:|
