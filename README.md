@@ -32,6 +32,7 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 
 <a id="todo"></a>
 ## 📝 TODO
+- [ ] Support training with LoRA on NVIDIA 4090 GPU.
 - [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm.
 - [ ] Release real-world demo.
 - [ ] Release models based on more baselines.
