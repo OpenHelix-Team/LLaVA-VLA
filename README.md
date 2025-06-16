@@ -57,12 +57,6 @@ Action chunking plays a pivotal role in manipulation tasks. Training the vision-
 #### Operating systems: Linux: Ubuntu 18.04+
 #### Software: CUDA Version: 12.1
 
-### Model Zoo
-
-| Method   | VLM               | Checkpoint |
-|----------|-------------------|---:|
-| LLaVA-VLA  | llava-v1.5-7b |[HF](https://huggingface.co/chenpyyy/LLaVA-VLA) | 
-
 ### Basic Env
 1. Clone this repository and navigate to LLaVA folder
 ```bash
@@ -94,6 +88,12 @@ sh download_data.sh ABC
 cd LLaVA-VLA/scripts
 python yourpath/calvin2json.py
 ```
+
+## 📦 Model Zoo
+
+| Method   | VLM               | Checkpoint |
+|----------|-------------------|---:|
+| LLaVA-VLA  | llava-v1.5-7b |[HF](https://huggingface.co/chenpyyy/LLaVA-VLA) | 
 
 <a id="training"></a>
 ## 📈 Training
