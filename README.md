@@ -175,21 +175,10 @@ Below is an explanation of the most commonly adjusted training parameters：
 
 <a id="evaluation"></a>
 ## 🔬 Evaluation
-Please note that we will switch the environment to `calvin_venv` here.
-In one Terminal window (e.g., in tmux), run the robot server:
+
+First, run the LLaVA-VLA policy evaluation script:
 ```bash
 bash  yourpath/LLaVA-VLA/scripts/server/start_multi_server.sh
-```
-tart model server on you own port(here is 9097)，
-CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
-
-Below is an explanation of the most commonly adjusted parameters:
-- `model_path`: Path to the model checkpoint.
-- `action_stat`: Action normalization stats.
-
-In a third Terminal window, run the LLaVA-VLA policy evaluation script:
-```bash
-bash yourpath/CALVIN/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
 ```
 Below is an explanation of the most commonly adjusted parameters:
 - `dataset_path`: Path to the root directory of the dataset.
@@ -199,6 +188,23 @@ Below is an explanation of the most commonly adjusted parameters:
 - `save_dir`: Directory to save inference results.
 - `num_chunk`: Length of the action sequence generated per chunk.
 - `conf_dir`: Directory containing configuration files.
+  
+In the second Terminal window, switch the environment:
+```
+conda activate calvin_venv
+```
+Then run the robot server:
+```bash
+bash yourpath/CALVIN/calvin_models/calvin_agent/evaluation/evaluate_policy_multiserver.sh
+```
+tart model server on you own port(here is 9097)，
+CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
+
+Below is an explanation of the most commonly adjusted parameters:
+- `model_path`: Path to the model checkpoint.
+- `action_stat`: Action normalization stats.
+
+
 
 <a id="acknowledgement"></a>
 ## 🙏 Acknowledgement
