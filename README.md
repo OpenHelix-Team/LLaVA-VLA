@@ -16,6 +16,7 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 - [Overview](#model-overview)
 - [Key Design](#key-design)
 - [Installation](#installation)
+- [Model Zoo](#modelzoo)
 - [Training](#training)
 - [Evaluation](#evaluation)
 - [Acknowledgement](#acknowledgement)
@@ -88,7 +89,7 @@ sh download_data.sh ABC
 cd LLaVA-VLA/scripts
 python yourpath/calvin2json.py
 ```
-
+<a id="modelzoo"></a>
 ## 📦 Model Zoo
 
 | Method   | VLM               | Checkpoint |
