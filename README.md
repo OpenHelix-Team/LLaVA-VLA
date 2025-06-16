@@ -223,7 +223,7 @@ Please feel free to add my WeChat: swx0757.
 
 <a id="citation"></a>
 ## 📑Citation
-We are writing the technical report for this project. Before that, you could kindly cite our IROS2025 paper:
+We are writing the technical report for this project. Before that, you could kindly cite our paper:
 ```
 @article{pdvla,
   title={Accelerating Vision-Language-Action Model Integrated with Action Chunking via Parallel Decoding},
