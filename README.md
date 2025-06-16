@@ -10,15 +10,6 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 4. 🔌 **Seamless Extensibility** - It is built on the widely-used LLaVA ecosystem. It fosters easy technology transfer to derivative projects.
 5. 🔄 **Active maintenance** - We will continuously improve it with new functions and environments.
 
-
-## News
-- **2025.06.17** 🌟 We release training codes, test codes, and checkpoints of LLaVA-VLA.
-
-## TODO
-- [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm.
-- [ ] Release real-world demo.
-- [ ] Release models based on more baselines.
-
 ## 📌 Contents
 - [Overview](#model-overview)
 - [Installation](#installation)
@@ -29,6 +20,14 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 - [Acknowledgement](#acknowledgement)
 - [Contact](#contact)
 - [Citation](#citation)
+
+## News
+- **2025.06.17** 🌟 We release training codes, test codes, and checkpoints of LLaVA-VLA.
+
+## TODO
+- [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm.
+- [ ] Release real-world demo.
+- [ ] Release models based on more baselines.
 
 ## 📊 Overview
 <a id="model-overview"></a>
