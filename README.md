@@ -192,6 +192,8 @@ Below is an explanation of the most commonly adjusted parameters:
 - `num_chunks`: Number of chunks to split tasks into for parallel processing.
 - `chunk_idx`: Index of current chunk.
 - `save_dir`: Directory to save inference results.
+- `num_chunk`: Length of the action sequence generated per chunk.
+- `conf_dir`: Directory containing configuration files.
 
 <a id="acknowledgement"></a>
 ## 🙏 Acknowledgement
