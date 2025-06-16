@@ -231,4 +231,10 @@ We are writing the technical report for this project. Before that, you could kin
   journal={arXiv preprint arXiv:2503.02310},
   year={2025}
 }
+@article{zhao2025unveiling,
+  title={Unveiling the Potential of Vision-Language-Action Models with Open-Ended Multimodal Instructions},
+  author={Zhao, Wei and Li, Gongsheng and Gong, Zhefei and Ding, Pengxiang and Zhao, Han and Wang, Donglin},
+  journal={arXiv preprint arXiv:2505.11214},
+  year={2025}
+}
 ```
