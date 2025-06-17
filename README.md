@@ -76,7 +76,7 @@ pip install -e .
 2. Clone and install CALVIN
 ```bash
 git clone --recurse-submodules https://github.com/mees/calvin.git
-export CALVIN_ROOT=$(pwd)/CALVIN
+export CALVIN_ROOT=$(pwd)/calvin
 cd $CALVIN_ROOT
 conda create -n calvin_venv python=3.8  
 conda activate calvin_venv
