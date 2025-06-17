@@ -90,6 +90,8 @@ def process_episide(episode: tuple, data_path: Path, processed_dir: Path, split:
 
         uuid = shortuuid.ShortUUID().random(length=7)
         sample = uuid + "_" + str(step).zfill(7) + ".jpg"
+        # print("processed_dir为", processed_dir)
+        # print("data_path.stem为", data_path.stem)
         os.makedirs(
             processed_dir / data_path.stem / f"vla_processed_r{future_k}" / split,
             exist_ok=True,
@@ -108,6 +110,8 @@ def process_episide(episode: tuple, data_path: Path, processed_dir: Path, split:
 
 def build_json_lang(data_path, processed_dir, processed_json_path, debug, future_k=5):
     data_path = Path(data_path)
+    processed_dir = Path(processed_dir)
+    processed_json_path = Path(processed_json_path)
     for split in ["training", "validation"]:
         lang_info = data_path / split / "lang_annotations" / "auto_lang_ann.npy"
         assert lang_info.exists(), "Invalid data path"
@@ -149,19 +153,19 @@ if __name__ == "__main__":
         "--calvin_original_data_path",
         type=str,
         help="Path to the calvin dataset directory.",
-        default="/data/user/user68/data/hpc2hdd/task_ABCD_D",
+        default="/share/user/iperror/data/task_ABC_D",
     )
     parser.add_argument(
         "--calvin_processed_directory",
         type=str,
-        help="Path to the calvin processed directory.",
-        default="/data/user/user68/data/calvin",
+        help="Save path to the calvin processed directory.",
+        default="/data/user/wsong890/user68/data/calvin_process",
     )
     parser.add_argument(
         "--calvin_processed_json_path",
         type=str,
-        help="Path to the calvin processed json file.",
-        default="/data/user/user68/data/calvin/calvin_processed_json",
+        help="Save path to the calvin processed json file.",
+        default="/data/user/wsong890/user68/project/vlas/playground",
     )
     parser.add_argument(
         "--future_k",
@@ -180,4 +184,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     random.seed(1234)
     np.random.seed(1234)
-    build_json_lang(args.calvin_original_data_path, args.calvin_processed_directory, args.calvin_processed_json_path, args.future_k, args.debug)
+    build_json_lang(args.calvin_original_data_path,
+                    args.calvin_processed_directory,
+                    args.calvin_processed_json_path, 
+                    args.debug,
+                    args.future_k)
