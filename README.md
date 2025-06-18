@@ -88,12 +88,17 @@ sh install.sh
 cd $CALVIN_ROOT/dataset
 sh download_data.sh ABC
 ```
+Please note that the `numpy` version = 1.23.5!
+
 4. Preprocess CALVIN dataset. This step will output a JSON file formatted for VLA training and a processed folder containing stitched images. You can manually modify the save path, but please ensure to use the data from the correct path during training/testing.
 ```bash
 cd LLaVA-VLA
 python ./scripts/helper/calvin2json.py
 ```
-Please note that the `numpy` version = 1.23.5!
+5. Install clip model
+```
+git clone https://huggingface.co/openai/clip-vit-large-patch14-336
+```
 <a id="modelzoo"></a>
 ## 📦 Model Zoo
 
