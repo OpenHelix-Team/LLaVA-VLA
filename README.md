@@ -95,17 +95,13 @@ Please note that the `numpy` version = 1.23.5!
 cd LLaVA-VLA
 python ./scripts/helper/calvin2json.py
 ```
-5. Install clip model
-```
-git clone https://huggingface.co/openai/clip-vit-large-patch14-336
-```
 <a id="modelzoo"></a>
 ## 📦 Model Zoo
 
 | Method   | VLM               | Checkpoint |
 |----------|-------------------|---:|
 | LLaVA-VLA  | llava-v1.5-7b |[HF](https://huggingface.co/chenpyyy/LLaVA-VLA) | 
-
+| CLIP|clip-vit-large-patch14-336|[HF](https://huggingface.co/openai/clip-vit-large-patch14-336)|
 <a id="training"></a>
 ## 📈 Training
 LLaVA-VLA is trained on 8 A100 GPUs with 80GB memory. To train on fewer GPUs, you can reduce the per_device_train_batch_size and increase the gradient_accumulation_steps accordingly. If you want to train from the checkpoint, always keep the global batch size the same: per_device_train_batch_size x gradient_accumulation_steps x num_gpus.
