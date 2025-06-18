@@ -5,7 +5,6 @@ conda activate calvin_venv
 export EGL_VISIBLE_DEVICES=0
 trap "kill 0" EXIT
 
-
 ## set the port list , the evaluation sequence is split into chunks, each chunk is evaluated by a server
 PORTSLIST=(9097 9098)
 SERVER_IP="127.0.0.1"
@@ -14,16 +13,16 @@ CHUNKS=${#PORTSLIST[@]}
 
 for IDX in $(seq 0 $((CHUNKS-1))); do
     python ./calvin_test/evaluate_policy_multiserver.py \
-        --dataset_path /share/user/iperror/data/task_ABC_D \
-        --question_file  /data/user/wsong890/user68/project/calvin/calvin_models/calvin_agent/evaluation/evaluation_sequence/questions/question.json\
+        --dataset_path ./calvin/dataset/task_ABC_D \
+        --question_file  ./calvin_test/question.json \
         --eval_log_dir $EVAL_LOG_DIR \
         --num_chunks $CHUNKS \
         --chunk_idx $IDX \
         --port ${PORTSLIST[$IDX]} \
         --server_ip $SERVER_IP \
-        --save_dir /data/user/wsong890/user68/project/rossvla/debug_video \
+        --save_dir ./debug_video \
         --action_chunk 5 \
-        --conf_dir /data/user/wsong890/user68/project/calvin/calvin_models/conf \
+        --conf_dir ./calvin/calvin_models/conf \
         --custom_model &
 done
         # --debug \
