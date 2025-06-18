@@ -93,6 +93,7 @@ sh download_data.sh ABC
 cd LLaVA-VLA
 python ./scripts/helper/calvin2json.py
 ```
+Please note that the `numpy` version = 1.23.5!
 <a id="modelzoo"></a>
 ## 📦 Model Zoo
 
@@ -193,11 +194,7 @@ Below is an explanation of the most commonly adjusted parameters:
 - `num_chunk`: Length of the action sequence generated per chunk.
 - `conf_dir`: Directory containing configuration files.
   
-In the second Terminal window, switch the environment:
-```
-conda activate calvin_venv
-```
-Then run the robot server:
+In the second Terminal window,  run the robot server:
 ```
 cd LLaVA-VLA
 bash  ./scripts/server/start_multi_server.sh
