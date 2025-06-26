@@ -32,10 +32,12 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 
 <a id="todo"></a>
 ## 📝 TODO
+- [ ] Release models based on LLaVA-OneVision-0.5b, which could be deployed on any GPU with 8G memory. (Before 6/25/2025)
+- [ ] Release models based on stronger LLaVA-OneVision-7b. (Before 6/25/2025)
+- [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm (In 07/2025).
 - [ ] Support training with LoRA on NVIDIA 4090 GPU.
-- [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm.
 - [ ] Release real-world demo.
-- [ ] Release models based on smaller baselines (e.g., Qwen 2.5-0.5b) and more advanced baselines (e.g., LLaVA-OneVision/Qwen 2.5-7b).
+
 
 <a id="model-overview"></a>
 ## 📊 Overview
@@ -76,7 +78,7 @@ pip install -e .
 2. Clone and install CALVIN
 ```bash
 git clone --recurse-submodules https://github.com/mees/calvin.git
-export CALVIN_ROOT=$(pwd)/CALVIN
+export CALVIN_ROOT=$(pwd)/calvin
 cd $CALVIN_ROOT
 conda create -n calvin_venv python=3.8  
 conda activate calvin_venv
@@ -88,6 +90,8 @@ sh install.sh
 cd $CALVIN_ROOT/dataset
 sh download_data.sh ABC
 ```
+Please note that the `numpy` version = 1.23.5!
+
 4. Preprocess CALVIN dataset. This step will output a JSON file formatted for VLA training and a processed folder containing stitched images. You can manually modify the save path, but please ensure to use the data from the correct path during training/testing.
 ```bash
 cd LLaVA-VLA
@@ -99,7 +103,7 @@ python ./scripts/helper/calvin2json.py
 | Method   | VLM               | Checkpoint |
 |----------|-------------------|---:|
 | LLaVA-VLA  | llava-v1.5-7b |[HF](https://huggingface.co/chenpyyy/LLaVA-VLA) | 
-
+| CLIP|clip-vit-large-patch14-336|[HF](https://huggingface.co/openai/clip-vit-large-patch14-336)|
 <a id="training"></a>
 ## 📈 Training
 LLaVA-VLA is trained on 8 A100 GPUs with 80GB memory. To train on fewer GPUs, you can reduce the per_device_train_batch_size and increase the gradient_accumulation_steps accordingly. If you want to train from the checkpoint, always keep the global batch size the same: per_device_train_batch_size x gradient_accumulation_steps x num_gpus.
@@ -193,11 +197,7 @@ Below is an explanation of the most commonly adjusted parameters:
 - `num_chunk`: Length of the action sequence generated per chunk.
 - `conf_dir`: Directory containing configuration files.
   
-In the second Terminal window, switch the environment:
-```
-conda activate calvin_venv
-```
-Then run the robot server:
+In the second Terminal window,  run the robot server:
 ```
 cd LLaVA-VLA
 bash  ./scripts/server/start_multi_server.sh

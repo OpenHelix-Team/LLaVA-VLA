@@ -5,20 +5,16 @@ which python
 echo $PATH
 export WANDB_MODE=offline
 export WANDB_DIR=./wandb
-# export LD_LIBRARY_PATH=/opt/conda/envs/llava/lib/python3.10/site-packages/nvidia/nvjitlink/lib:/usr/local/cuda/lib64:/usr/local/cuda/compat/lib.real:$LD_LIBRARY_PATH
-# export WANDB_API_KEY=local-73e66a04fa97e2a5d5c573a97e65bf1194533e1f
-# export WANDB_BASE_URL=http://10.28.0.22:30437/
 export PYTHONPATH=/data/user/wsong890/user68/project/vlas:$PYTHONPATH
-# export PYTHONPATH=/data/user/wsong890/user68/conda_env/llava/lib/python3.10/site-packages:$PYTHONPATH
-export MODEL_NAME_OR_PATH=/data/user/wsong890/user68/project/vlas/llava-v1.5-7b
-export OUTPUT_DIR=./checkpoints/llava-v1.5-7b-calvin-rel-obs-reduce5-v1-abcd2d_2024_03_14
-export CALVIN_PROCESSED_JSON_PATH=/data/user/wsong890/user68/data/calvin/calvin_processed_json
-export CALVIN_PROCESSED_DIRECTORY=/data/user/wsong890/user68/data/calvin_process/task_ABCD_D/vla_processed_r5
-export ACTION_STAT=/data/user/wsong890/user68/data/statistics.yaml
-export VISION_TOWER=/data/user/wsong890/user68/project/clip-vit-large-patch14-336
-export DEEPSPEED_CONFIG=/data/user/wsong890/user68/project/vlas/scripts/zero3.json
-
-deepspeed --include=localhost:0,1 /data/user/wsong890/user68/project/vlas/llava/train/calvin_train_obs.py \
+export MODEL_NAME_OR_PATH=/yourpath/llava-v1.5-7b
+export OUTPUT_DIR=./checkpoints
+export CALVIN_PROCESSED_JSON_PATH=yourpath/calvin/calvin_processed_json
+export CALVIN_PROCESSED_DIRECTORY=/yourpath/calvin_process/task_ABCD_D/vla_processed_r5
+export ACTION_STAT=/yourpath/calvin/dataset/task_ABCD_D/training/statistics.yaml
+export VISION_TOWER=/yourpath/clip-vit-large-patch14-336
+export DEEPSPEED_CONFIG=./LLaVA/scripts/zero3.json
+# Please replace 'yourpath' with your actual path!
+deepspeed --include=localhost:0,1 ./LLaVA/llava/train/calvin_train_obs.py \
     --deepspeed $DEEPSPEED_CONFIG \
     --model_name_or_path $MODEL_NAME_OR_PATH \
     --version v1 \
@@ -26,6 +22,7 @@ deepspeed --include=localhost:0,1 /data/user/wsong890/user68/project/vlas/llava/
     --image_folder $CALVIN_PROCESSED_DIRECTORY \
     --action_stat $ACTION_STAT \
     --vision_tower $VISION_TOWER \
+    --bin_size 256 \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
