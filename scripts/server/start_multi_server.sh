@@ -11,6 +11,7 @@ for IDX in $(seq 0 $((CHUNKS-1))); do
     CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python  ./llava/serve/flask_server.py \
         --model-path  ./yourpath/llava-v1.5-7b-calvin-rel-obs-reduce5-v1-abc2d_2epoch \
         --action_stat ./calvin/task_ABCD_D/training/statistics.yaml \
+        --action_chunk 5 \
         --port $port & 
 done
 
