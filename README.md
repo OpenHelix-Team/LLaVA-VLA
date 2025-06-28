@@ -8,7 +8,7 @@
 We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built upon the popular open-source VLM [LLaVA](https://github.com/haotian-liu/LLaVA). This implementation combines accessibility with strong performance for robotic manipulation tasks. The key features lie in:
 
 1. 🏗️ **Minimalist design** - It is a vanilla VLA architecture without performance-hacking components. It is designed for easy modification and educational use. And it is also an ideal baseline for new researchers in embodied AI.
-2. 🏆 **Competitive performance** - It achieves 3.68% success rate on [CALVIN](https://github.com/mees/calvin) benchmark, which outperforms the most popular baseline OpenVLA.
+2. 🏆 **Competitive performance** - It achieves 3.68 average success step on [CALVIN](https://github.com/mees/calvin) benchmark, which outperforms the most popular baseline OpenVLA.
 3. 💸 **Efficient training** - It does not need pre-training on large-scale robot datasets. It only requires 7h fine-tuning from the LLaVA-v1.5-7b checkpoint.
 4. 🔌 **Seamless Extensibility** - It is built on the widely-used LLaVA ecosystem. It fosters easy technology transfer to derivative projects.
 5. 🔄 **Active maintenance** - We will continuously improve it with new functions and environments.
