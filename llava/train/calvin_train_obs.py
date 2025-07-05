@@ -29,17 +29,18 @@ import transformers
 from transformers import AddedToken
 import tokenizers
 
-from llava.constants import IGNORE_INDEX, IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN, DEFAULT_AUDIO_TOKEN, DEFAULT_GOAL_TOKEN
+from llava.constants import IGNORE_INDEX, IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
 from torch.utils.data import Dataset
 from llava.train.llava_trainer import LLaVATrainer
 
 from llava import conversation as conversation_lib
 from llava.model import *
-from llava.mm_utils import tokenizer_image_token, tokenizer_audio_token, tokenizer_image_audio_token
+from llava.mm_utils import tokenizer_image_token
 from llava.action_tokenizer import ActionTokenizer, encode_actions, encode_robot_obs
 
 from PIL import Image
 from functools import partial
+
 
 local_rank = None
 
@@ -52,13 +53,12 @@ def rank0_print(*args):
 from packaging import version
 IS_TOKENIZER_GREATER_THAN_0_14 = version.parse(tokenizers.__version__) >= version.parse('0.14')
 
-
 @dataclass
 class ModelArguments:
     model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
     version: Optional[str] = field(default="v0")
     freeze_backbone: bool = field(default=False)
-    tune_mm_mlp_adapter: bool = field(default=False)#视觉到文本模块
+    tune_mm_mlp_adapter: bool = field(default=False)
     vision_tower: Optional[str] = field(default=None)
     mm_vision_select_layer: Optional[int] = field(default=-1)   # default to the last layer
     pretrain_mm_mlp_adapter: Optional[str] = field(default=None)
@@ -74,6 +74,40 @@ class ModelArguments:
     mm_audio_select_layer: Optional[int] = field(default=-1)
     pretrain_mm_mlp_adapter_audio: Optional[str] = field(default=None)
     mm_projector_type_audio: Optional[str] = field(default='mlp2x_gelu')
+
+    # Added from new version
+    model_class_name: Optional[str] = field(default=None, metadata={"help": "Used to init model class, format is XXXXForCausalLM. e.g. currently XXXX is chosen from LlavaLlama, LlavaMixtral, LlavaMistral, Llama"})
+    mm_tunable_parts: Optional[str] = field(default=None, metadata={"help": 'Could be "mm_mlp_adapter", "mm_vision_resampler", "mm_vision_tower,mm_mlp_adapter,mm_language_model", etc.'})
+    tune_mm_vision_resampler: bool = field(default=False)
+    vision_tower_pretrained: Optional[str] = field(default=None)
+    unfreeze_mm_vision_tower: bool = field(default=False)
+    unfreeze_language_model: bool = field(default=False)
+    mm_resampler_type: Optional[str] = field(default=None)
+    mm_mask_drop_mode: str = field(default="fixed")
+    mm_mask_drop_skip_percentage: float = field(default=0.0)
+    mm_mask_drop_ratio: float = field(default=0.25)
+    mm_mask_drop_ratio_upper: Optional[float] = field(default=None)
+    mm_mask_drop_ratio_lower: Optional[float] = field(default=None)
+    mm_spatial_pool_stride: Optional[int] = field(default=None)
+    mm_spatial_pool_mode: str = field(default="bilinear")
+    mm_spatial_pool_out_channels: Optional[int] = field(default=None)
+    mm_perceiver_depth: Optional[int] = field(default=3)
+    mm_perceiver_latents: Optional[int] = field(default=32)
+    mm_perceiver_ff_mult: Optional[float] = field(default=4)
+    mm_perceiver_pretrained: Optional[str] = field(default=None)
+    mm_qformer_depth: Optional[int] = field(default=3)
+    mm_qformer_latents: Optional[int] = field(default=32)
+    mm_qformer_pretrained: Optional[str] = field(default=None)
+    rope_scaling_factor: Optional[float] = field(default=None)
+    rope_scaling_type: Optional[str] = field(default=None)
+    s2: Optional[bool] = field(default=False)
+    s2_scales: Optional[str] = field(default="336,672,1008")
+    use_pos_skipping: Optional[bool] = field(default=False)
+    pos_skipping_range: Optional[int] = field(default=4096)
+    mm_newline_position: Optional[str] = field(default="grid")
+    delay_load: Optional[bool] = field(default=True)
+    add_faster_video: Optional[bool] = field(default=False)
+    faster_token_stride: Optional[int] = field(default=10)
 
 
 @dataclass
@@ -98,26 +132,15 @@ class TrainingArguments(transformers.TrainingArguments):
     optim: str = field(default="adamw_torch")
     remove_unused_columns: bool = field(default=False)
     freeze_mm_mlp_adapter: bool = field(default=False)
+    freeze_mm_vision_resampler: bool = field(default=False)
     mpt_attn_impl: Optional[str] = field(default="triton")
     model_max_length: int = field(
-        default=512,
-        metadata={
-            "help":
-            "Maximum sequence length. Sequences will be right padded (and possibly truncated)."
-        },
+        default=4096,
+        metadata={"help": "Maximum sequence length. Sequences will be right padded (and possibly truncated)."},
     )
-    double_quant: bool = field(
-        default=True,
-        metadata={"help": "Compress the quantization statistics through double quantization."}
-    )
-    quant_type: str = field(
-        default="nf4",
-        metadata={"help": "Quantization data type to use. Should be one of `fp4` or `nf4`."}
-    )
-    bits: int = field(
-        default=16,
-        metadata={"help": "How many bits to use."}
-    )
+    double_quant: bool = field(default=True, metadata={"help": "Compress the quantization statistics through double quantization."})
+    quant_type: str = field(default="nf4", metadata={"help": "Quantization data type to use. Should be one of `fp4` or `nf4`."})
+    bits: int = field(default=16, metadata={"help": "How many bits to use."})
     lora_enable: bool = False
     lora_r: int = 64
     lora_alpha: int = 16
@@ -125,7 +148,14 @@ class TrainingArguments(transformers.TrainingArguments):
     lora_weight_path: str = ""
     lora_bias: str = "none"
     mm_projector_lr: Optional[float] = None
+    mm_vision_tower_lr: Optional[float] = None
+    group_by_varlen: bool = field(default=False)
     group_by_modality_length: bool = field(default=False)
+    group_by_modality_length_auto: bool = field(default=False)
+    auto_find_batch_size: bool = field(default=False)
+    gradient_checkpointing: bool = field(default=True)
+    verbose_logging: bool = field(default=False)
+    attn_implementation: str = field(default="flash_attention_2", metadata={"help": "Use transformers attention implementation."})
 
     # Add for audio modality
     freeze_audio_adapter: bool = field(default=False)
@@ -297,6 +327,8 @@ def format_source_data(sources, conv, has_embody, action_tokenizer):
             if sentence["from"] == "gpt":
                 if has_embody:
                     sent_value = action_to_lang(sentence["value"], action_tokenizer)
+                    if isinstance(sent_value, tuple):
+                        sent_value = sent_value[-1]
                 else:
                     sent_value = sentence["value"]
             else:
@@ -304,11 +336,16 @@ def format_source_data(sources, conv, has_embody, action_tokenizer):
                     sent_value = sentence["value"]
                     sent_value_parts = sent_value.split("\n")
                     robot_obs = robot_obs_lang(sent_value_parts[-1], action_tokenizer)
-                    sent_value_parts[-1] = robot_obs
-                    # sent_value_parts = sent_value_parts[:2]
+                    if isinstance(robot_obs, tuple):
+                        # print("robot_obs is tuple")
+                        sent_value_parts[-1] = robot_obs[-1]
+                    else:
+                        sent_value_parts[-1] = robot_obs
+                    # print("sent_value_parts:",sent_value_parts)
                     sent_value = "\n".join(sent_value_parts)
                 else:
                     sent_value = sentence["value"]
+            # print("sent_value:",sent_value)
             conv.append_message(role, sent_value)
         conversations.append(conv.get_prompt())
     return conversations
@@ -345,12 +382,12 @@ def mask_target_labels(conversations, conv, targets, tokenizer):
             if '<image>' in rou and not '<audio>' in rou:
                 round_len = len(tokenizer_image_token(rou, tokenizer))                   # 统计长度时多了, 但少了\]
                 instruction_len = len(tokenizer_image_token(parts[0], tokenizer)) - 2    # 统计长度时多了, 且': '在句尾时多了' ', 所以减2
-            elif '<audio>' in rou and not '<image>' in rou:
-                round_len = len(tokenizer_audio_token(rou, tokenizer))
-                instruction_len = len(tokenizer_audio_token(parts[0], tokenizer)) - 2
-            elif '<audio>' in rou and '<image>' in rou:
-                round_len = len(tokenizer_audio_token(rou, tokenizer))
-                instruction_len = len(tokenizer_image_audio_token(parts[0], tokenizer)) - 2
+            # elif '<audio>' in rou and not '<image>' in rou:
+            #     round_len = len(tokenizer_audio_token(rou, tokenizer))
+            #     instruction_len = len(tokenizer_audio_token(parts[0], tokenizer)) - 2
+            # elif '<audio>' in rou and '<image>' in rou:
+            #     round_len = len(tokenizer_audio_token(rou, tokenizer))
+            #     instruction_len = len(tokenizer_image_audio_token(parts[0], tokenizer)) - 2
             else:
                 round_len = len(tokenizer(rou).input_ids)
                 instruction_len = len(tokenizer(parts[0]).input_ids) - 2
@@ -544,6 +581,7 @@ def train(attn_implementation=None):
     parser = transformers.HfArgumentParser(
         (ModelArguments, DataArguments, TrainingArguments))
     model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+    print(model_args)
     # print(model_args)
     local_rank = training_args.local_rank
     compute_dtype = (torch.float16 if training_args.fp16 else (torch.bfloat16 if training_args.bf16 else torch.float32))
@@ -600,6 +638,7 @@ def train(attn_implementation=None):
         )
     model.config.use_cache = False
 
+
     if model_args.freeze_backbone:
         model.model.requires_grad_(False)
 
@@ -608,7 +647,7 @@ def train(attn_implementation=None):
         model.config.torch_dtype=(torch.float32 if training_args.fp16 else (torch.bfloat16 if training_args.bf16 else torch.float32))
         model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=training_args.gradient_checkpointing)
 
-    if training_args.gradient_checkpointing:#在前向传播时不存储中间激活值。在反向传播时动态重新计算这些激活值
+    if training_args.gradient_checkpointing:#
         if hasattr(model, "enable_input_require_grads"):
             model.enable_input_require_grads()
         else:
@@ -728,7 +767,10 @@ def train(attn_implementation=None):
                     tokenizer=tokenizer,
                     args=training_args,
                     **data_module)
-
+    # print("🔍 当前参与训练的参数层:")
+    # for name, param in model.named_parameters():
+    #     if param.requires_grad:
+    #         print(f"  - {name}: {list(param.shape)}")
     if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
         trainer.train(resume_from_checkpoint=True)
     else:

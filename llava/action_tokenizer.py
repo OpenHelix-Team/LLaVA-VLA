@@ -10,8 +10,7 @@ import numpy as np
 from transformers import PreTrainedTokenizerBase
 from pathlib import Path
 import yaml
-import json
-import torch
+
 
 class ActionTokenizer:
     def __init__(
@@ -36,16 +35,24 @@ class ActionTokenizer:
 
         # [Contract] Set "action_token_begin_idx" based on `self.tokenizer.vocab_size - (self.n_bins + 1)`
         #   =>> Assumes we're always overwriting the final `n_bins` tokens of the vocabulary!
+        
         self.action_token_begin_idx: int = int(self.tokenizer.vocab_size - (self.n_bins + 1))
 
     def __call__(self, action: np.ndarray) -> Union[str, List[str]]:
         """Clip & bin actions to *the last `n_bins` tokens* of the vocabulary (e.g., tokenizer.vocab[-256:])."""
         action = np.clip(action, a_min=float(self.min_action), a_max=float(self.max_action))
         discretized_action = np.digitize(action, self.bins)
+        # print("在这里discretized_action为", discretized_action)
 
         # Handle single element vs. batch
         if len(discretized_action.shape) == 1:
-            return self.tokenizer.decode(list(self.tokenizer.vocab_size - discretized_action))
+            # print(f"self.tokenizer.vocab_size为: {self.tokenizer.vocab_size}")
+            real_action_token = list(self.tokenizer.vocab_size - discretized_action)
+            decode_action_token = self.tokenizer.decode(real_action_token)
+            # print("在这里, decode结果为", self.tokenizer.decode(list(self.tokenizer.vocab_size - discretized_action)))
+            # print("在这里, encode结果为", self.tokenizer.encode(self.tokenizer.decode(list(self.tokenizer.vocab_size - discretized_action))))
+            # return self.tokenizer.decode(list(self.tokenizer.vocab_size - discretized_action))
+            return real_action_token, decode_action_token
         else:
             return self.tokenizer.batch_decode((self.tokenizer.vocab_size - discretized_action).tolist())
 
@@ -88,31 +95,11 @@ class ActionTokenizer:
             return np.linspace(min_action, max_action, n_bins)
 
 
-def encode_actions_real(sentence, action_tokenizer, statistics=None):
-    if statistics is not None:
-        assert Path(statistics).exists(), "Statistical file not found."
-        with open(statistics, "r") as file_:
-            config = yaml.safe_load(file_)
-        act_std = np.array(config["act_min_bound"])
-        act_mean = np.array(config["act_max_bound"])
 
-        act_mean = np.tile(act_mean, 5)
-        act_std = np.tile(act_std, 5)
-
-        actions = sentence.split(" ")
-        actions = [float(action) for action in actions]
-        actions = (np.array(actions) - act_mean) / (act_std + 1e-5)
-        
-        # 3 sigma clipping
-        actions = actions / 3
-        actions = np.clip(actions, a_min=-1, a_max=1)
-        actions_lang = action_tokenizer(actions)
-    return actions_lang
 
 
 def encode_actions(sentence, action_tokenizer, statistics=None):
     if statistics is not None:
-        print("use statistics")
         # use the absolute action
         assert Path(statistics).exists(), "Statistical file not found."
         with open(statistics, "r") as file_:
@@ -121,92 +108,19 @@ def encode_actions(sentence, action_tokenizer, statistics=None):
         act_max_bound = np.array(config["act_max_bound"])
         act_min_bound = np.tile(act_min_bound, 5)
         act_max_bound = np.tile(act_max_bound, 5)
-
         actions = sentence.split(" ")
         actions = [float(action) for action in actions]
         actions = (np.array(actions) - act_min_bound) / (act_max_bound - act_min_bound)
         actions = actions * 2 - 1
-        actions_lang = action_tokenizer(actions)
+        real_action_token, actions_lang = action_tokenizer(actions)
     else:
         # use the relative action
-        # print("not use statistics")
         actions = sentence.split(" ")
         actions = [float(action) for action in actions]
-        actions_lang = action_tokenizer(actions)
+        real_action_token, actions_lang = action_tokenizer(actions)
+    return real_action_token, actions_lang
 
-    return actions_lang
-def encode_actions_forpipper(sentence, action_tokenizer, statistics=None):
-    assert statistics is not None, "Statistics file path is required."
-    assert Path(statistics).exists(), "Statistical file not found."
 
-    # 读取 JSON
-    with open(statistics, "r") as f:
-        config = json.load(f)
-
-    # 从 JSON 中提取动作最小值 / 最大值
-    act_min_bound = np.array(config["action"]["min"])
-    act_max_bound = np.array(config["action"]["max"])
-
-    # 支持 Tensor 或字符串输入
-    if isinstance(sentence, torch.Tensor):
-        actions = sentence.cpu().numpy()
-    elif isinstance(sentence, list):
-        actions = np.array(sentence)
-    elif isinstance(sentence, str):
-        actions = np.array([float(a) for a in sentence.strip().split()])
-    else:
-        raise TypeError("Unsupported type for `sentence`")
-
-    action_dim = len(act_min_bound)
-
-    # 如果 actions 是多个动作拼接（如两帧），自动扩展
-    if len(actions) != action_dim:
-        assert len(actions) % action_dim == 0, f"动作长度 {len(actions)} 不是基础维度 {action_dim} 的整数倍"
-        repeat_factor = len(actions) // action_dim
-        act_min_bound = np.tile(act_min_bound, repeat_factor)
-        act_max_bound = np.tile(act_max_bound, repeat_factor)
-
-    # Min-max 归一化到 [-1, 1]
-    normed_actions = (actions - act_min_bound) / (act_max_bound - act_min_bound + 1e-5)
-    normed_actions = normed_actions * 2 - 1
-
-    # Tokenizer 处理
-    actions_lang = action_tokenizer(normed_actions)
-    return actions_lang
-def decode_actions_forpipper(normed_actions, statistics=None):
-    assert statistics is not None, "Statistics file path is required."
-    assert Path(statistics).exists(), "Statistical file not found."
-
-    # 读取 JSON 文件，提取动作范围
-    with open(statistics, "r") as f:
-        config = json.load(f)
-
-    act_min_bound = np.array(config["action"]["min"])
-    act_max_bound = np.array(config["action"]["max"])
-
-    # 如果传入的是 Tensor / list / str，都统一转换为 numpy
-    if isinstance(normed_actions, torch.Tensor):
-        normed_actions = normed_actions.cpu().numpy()
-    elif isinstance(normed_actions, list):
-        normed_actions = np.array(normed_actions)
-    elif isinstance(normed_actions, str):
-        normed_actions = np.array([float(a) for a in normed_actions.strip().split()])
-
-    action_dim = len(act_min_bound)
-
-    # 处理重复动作帧情况（如拼接了多帧）
-    if len(normed_actions) != action_dim:
-        assert len(normed_actions) % action_dim == 0, \
-            f"动作长度 {len(normed_actions)} 不是基础维度 {action_dim} 的整数倍"
-        repeat_factor = len(normed_actions) // action_dim
-        act_min_bound = np.tile(act_min_bound, repeat_factor)
-        act_max_bound = np.tile(act_max_bound, repeat_factor)
-
-    # 反归一化：[-1, 1] → [min, max]
-    normed_actions = (normed_actions + 1) / 2
-    actions = normed_actions * (act_max_bound - act_min_bound + 1e-5) + act_min_bound
-
-    return actions
 def denormalize_actions(actions: np.float32, statistics=None):
     assert Path(statistics).exists(), "Statistical file not found."
     with open(statistics, "r") as file_:
@@ -256,34 +170,3 @@ def encode_robot_obs(sentence, action_tokenizer, statistics=None):
 
     robot_obs_lang = action_tokenizer(robot_obs)
     return robot_obs_lang
-
-def encode_robot_obs_forpipper(sentence, action_tokenizer, statistics=None):
-    assert Path(statistics).exists(), "Statistical file not found."
-
-    with open(statistics, "r") as f:
-        stats = json.load(f)
-
-    # 读取 observation.state 部分的 mean 和 std（注意：不是 robot_obs，而是 observation.state）
-    obs_mean = np.array(stats["observation.state"]["mean"])
-    obs_std = np.array(stats["observation.state"]["std"])
-
-    # ✅ 支持 tensor / list / str
-    if isinstance(sentence, torch.Tensor):
-        robot_obs = sentence.cpu().numpy().tolist()
-    elif isinstance(sentence, list):
-        robot_obs = sentence
-    elif isinstance(sentence, str):
-        robot_obs = [float(x) for x in sentence.strip().split()]
-    else:
-        raise TypeError("Unsupported input type for `sentence`")
-
-    assert len(robot_obs) == len(obs_mean), f"Expected {len(obs_mean)} obs values, got {len(robot_obs)}"
-
-    # 归一化：根据 3σ 原则缩放至 [-1, 1]
-    robot_obs = (np.array(robot_obs) - obs_mean) / (obs_std + 1e-5)
-    robot_obs = robot_obs / 3.0  # 缩放至 [-1, 1]
-
-    # 使用 action_tokenizer 进行离散化（或文本化）
-    robot_obs_lang = action_tokenizer(robot_obs)
-    return robot_obs_lang
-

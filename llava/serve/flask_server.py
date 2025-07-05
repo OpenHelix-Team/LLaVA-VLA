@@ -24,7 +24,7 @@ import time
 
 
 TARGET_IMG_SIZE = 334  # NOTE need to be consistent with that in calvin2json.py
-ACTION_DIM = 7
+
 
 class LLMRobotServer:
     def __init__(self, args):
@@ -65,6 +65,8 @@ class LLMRobotServer:
         robot_obs = [str(elem) for elem in robot_obs]
         robot_obs = " ".join(robot_obs)
         robot_obs = encode_robot_obs(robot_obs, self.action_tokenizer, self.action_stat)
+        if isinstance(robot_obs, tuple):
+            robot_obs = robot_obs[-1]
         print("instruction:",instruction)
 
         instruction = DEFAULT_IMAGE_TOKEN + "\n" + instruction + "\n" + robot_obs
@@ -81,7 +83,7 @@ class LLMRobotServer:
         print("input_ids为", input_ids)
         return input_ids, image_tensor
 
-    def robot_action_generate(self, input_ids, images, action_chunk):
+    def robot_action_generate(self, input_ids, images):
             """生成机器人动作并记录推理时间和速度。"""
             time0 = time.time()
             with torch.inference_mode():
@@ -101,19 +103,10 @@ class LLMRobotServer:
             num_tokens = output_ids.shape[1]
             ar_speed_time = num_tokens / generate_time
 
-            # 记录推理时间和速度
-            # log_file = "/home/lg5/project/vlas/llava/serve.jsonl"
-            # log_data = {
-            #     # "timestamp": datetime.now().isoformat(),
-            #     "generate_time": round(generate_time, 4),
-            #     "tokens_per_second": round(ar_speed_time, 2),
-            #     # "num_tokens": num_tokens
-            # }
-            # with open(log_file, "a") as f:
-            #     f.write(json.dumps(log_data) + "\n")
 
             # 处理输出
-            output_ids = output_ids[0].cpu().numpy().tolist()[-action_chunk*ACTION_DIM-1:-1]
+            # print("output_ids:",output_ids)
+            output_ids = output_ids[0].cpu().numpy().tolist()[2:-1]
             actions = [self.action_tokenizer.decode_token_ids_to_actions(elem) for elem in output_ids]
             print("actions:",actions)
             return np.array(actions)
@@ -135,7 +128,6 @@ if __name__ == "__main__":
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
     parser.add_argument("--max_new_tokens", type=int, default=128)
-    parser.add_argument("--action_chunk", type=int, default=5)
     parser.add_argument(
         "--action_stat",
         type=str,
@@ -167,7 +159,7 @@ if __name__ == "__main__":
             input_ids, images = llm_robot.compose_robot_input(
                 img_static, img_gripper, instruction, robot_obs
             )
-            action = llm_robot.robot_action_generate(input_ids, images, args.action_chunk)
+            action = llm_robot.robot_action_generate(input_ids, images)
             print(action)
             return jsonify(action.tolist())
 

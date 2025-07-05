@@ -1,4 +1,4 @@
-#    Copyright 2023 Haotian Liu
+#    Copyright 2024 Duc Q. Nguyen, Haotian Liu and Bo Li
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -17,34 +17,34 @@ from typing import List, Optional, Tuple, Union
 
 import torch
 import torch.nn as nn
+from torch.nn import CrossEntropyLoss
 
-from transformers import AutoConfig, AutoModelForCausalLM, \
-                         LlamaConfig, LlamaModel, LlamaForCausalLM
+from transformers import AutoConfig, AutoModelForCausalLM, GemmaConfig, GemmaModel, GemmaForCausalLM
 
 from transformers.modeling_outputs import CausalLMOutputWithPast
 from transformers.generation.utils import GenerateOutput
 
-from ..llava_arch import AsrLlavaMetaModel, AsrLlavaMetaForCausalLM
+from ..llava_arch import LlavaMetaModel, LlavaMetaForCausalLM
 
 
-class AsrLlavaConfig(LlamaConfig):
-    model_type = "asr_llava"
+class LlavaGemmaConfig(GemmaConfig):
+    model_type = "llava_gemma"
 
 
-class AsrLlavaModel(AsrLlavaMetaModel, LlamaModel):
-    config_class = AsrLlavaConfig
+class LlavaGemmaModel(LlavaMetaModel, GemmaModel):
+    config_class = LlavaGemmaConfig
 
-    def __init__(self, config: LlamaConfig):
-        super(AsrLlavaModel, self).__init__(config)
+    def __init__(self, config: GemmaConfig):
+        super(LlavaGemmaModel, self).__init__(config)
 
 
-class AsrLlavaForCausalLM(AsrLlavaMetaForCausalLM, LlamaForCausalLM):
-    config_class = AsrLlavaConfig
+class LlavaGemmaForCausalLM(GemmaForCausalLM, LlavaMetaForCausalLM):
+    config_class = LlavaGemmaConfig
 
     def __init__(self, config):
-        super(LlamaForCausalLM, self).__init__(config)
-        self.model = AsrLlavaModel(config)
-        self.vocab_size = config.vocab_size
+        super(GemmaForCausalLM, self).__init__(config)
+        self.model = LlavaGemmaModel(config)
+
         self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
         # Initialize weights and apply final processing
@@ -66,30 +66,14 @@ class AsrLlavaForCausalLM(AsrLlavaMetaForCausalLM, LlamaForCausalLM):
         output_hidden_states: Optional[bool] = None,
         images: Optional[torch.FloatTensor] = None,
         image_sizes: Optional[List[List[int]]] = None,
-        audios: Optional[torch.FloatTensor] = None,
         return_dict: Optional[bool] = None,
+        cache_position: Optional[torch.LongTensor] = None,
     ) -> Union[Tuple, CausalLMOutputWithPast]:
 
         if inputs_embeds is None:
-            (
-                input_ids,
-                position_ids,
-                attention_mask,
-                past_key_values,
-                inputs_embeds,
-                labels
-            ) = self.prepare_inputs_labels_for_multimodal(
-                input_ids,
-                position_ids,
-                attention_mask,
-                past_key_values,
-                labels,
-                images,
-                image_sizes,
-                audios
-            )
+            (input_ids, position_ids, attention_mask, past_key_values, inputs_embeds, labels) = self.prepare_inputs_labels_for_multimodal(input_ids, position_ids, attention_mask, past_key_values, labels, images, image_sizes)
 
-        ans = super().forward(
+        return super().forward(
             input_ids=input_ids,
             attention_mask=attention_mask,
             position_ids=position_ids,
@@ -99,10 +83,9 @@ class AsrLlavaForCausalLM(AsrLlavaMetaForCausalLM, LlamaForCausalLM):
             use_cache=use_cache,
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
-            return_dict=return_dict
+            return_dict=return_dict,
+            cache_position=cache_position,
         )
-
-        return ans
 
     @torch.no_grad()
     def generate(
@@ -110,51 +93,30 @@ class AsrLlavaForCausalLM(AsrLlavaMetaForCausalLM, LlamaForCausalLM):
         inputs: Optional[torch.Tensor] = None,
         images: Optional[torch.Tensor] = None,
         image_sizes: Optional[torch.Tensor] = None,
-        inputs_embeds: Optional[torch.FloatTensor] = None,
-        audios: Optional[torch.Tensor] = None,
         **kwargs,
     ) -> Union[GenerateOutput, torch.LongTensor]:
         position_ids = kwargs.pop("position_ids", None)
         attention_mask = kwargs.pop("attention_mask", None)
+        if "inputs_embeds" in kwargs:
+            raise NotImplementedError("`inputs_embeds` is not supported")
 
-        if inputs_embeds is None:
-            (
-                inputs,
-                position_ids,
-                attention_mask,
-                _,
-                inputs_embeds,
-                _
-            ) = self.prepare_inputs_labels_for_multimodal(
-                inputs,
-                position_ids,
-                attention_mask,
-                None,
-                None,
-                images,
-                image_sizes,
-                audios
-            )
+        if images is not None:
+            (inputs, position_ids, attention_mask, _, inputs_embeds, _) = self.prepare_inputs_labels_for_multimodal(inputs, position_ids, attention_mask, None, None, images, image_sizes=image_sizes)
+        else:
+            inputs_embeds = self.get_model().embed_tokens(inputs)
 
-        return super().generate(
-            position_ids=position_ids,
-            attention_mask=attention_mask,
-            inputs_embeds=inputs_embeds,
-            **kwargs
-        )
+        return super().generate(position_ids=position_ids, attention_mask=attention_mask, inputs_embeds=inputs_embeds, **kwargs)
 
-    def prepare_inputs_for_generation(self, input_ids, past_key_values=None,
-                                      inputs_embeds=None, **kwargs):
+    def prepare_inputs_for_generation(self, input_ids, past_key_values=None, inputs_embeds=None, **kwargs):
         images = kwargs.pop("images", None)
         image_sizes = kwargs.pop("image_sizes", None)
-        inputs = super().prepare_inputs_for_generation(
-            input_ids, past_key_values=past_key_values, inputs_embeds=inputs_embeds, **kwargs
-        )
+        inputs = super().prepare_inputs_for_generation(input_ids, past_key_values=past_key_values, inputs_embeds=inputs_embeds, **kwargs)
         if images is not None:
-            inputs['images'] = images
+            inputs["images"] = images
         if image_sizes is not None:
-            inputs['image_sizes'] = image_sizes
+            inputs["image_sizes"] = image_sizes
         return inputs
 
-AutoConfig.register("asr_llava", AsrLlavaConfig)
-AutoModelForCausalLM.register(AsrLlavaConfig, AsrLlavaForCausalLM)
+
+AutoConfig.register("llava_gemma", LlavaGemmaConfig)
+AutoModelForCausalLM.register(LlavaGemmaConfig, LlavaGemmaForCausalLM)
