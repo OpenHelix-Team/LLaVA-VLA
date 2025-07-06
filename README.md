@@ -114,26 +114,25 @@ If you have multiple GPUs and wish to use PyTorch's Distributed Data Parallel, s
 ```bash
 cd LLaVA-VLA
 bash ./scripts/train/calvin_finetune_obs.sh
-# bash ./scripts/train/finetune_ov_0.5b.sh(If you want to train based on LLaVA-OneVision-0.5b, please run this script.)
+```
+If you want to train based on **LLaVA-OneVision-0.5b**, please run this script.
+```bash
+# bash ./scripts/train/finetune_ov_0.5b.sh
 ```
 calvin_finetune_obs.sh
 ```bash
-#!/bin/bash
-source ~/user68/conda_env/llava/bin/activate 
+#!/bin/bash 
 # export CUDA_VISIBLE_DEVICES=0,1
-which python
-echo $PATH
 export WANDB_MODE=offline
 export WANDB_DIR=./wandb
 
-export PYTHONPATH=yourpath/LLaVA-VLA:$PYTHONPATH
 export MODEL_NAME_OR_PATH=yourpath/LLaVA/llava-v1.5-7b
 export OUTPUT_DIR=yourpath
 export CALVIN_PROCESSED_JSON_PATH=yourpath/data/CALVIN/calvin_processed_json
 export CALVIN_PROCESSED_DIRECTORY=yourpath/data/CALVIN_process/task_ABCD_D/vla_processed_r5
 export ACTION_STAT=yourpath/data/statistics.yaml
 export VISION_TOWER=yourpath/project/clip-vit-large-patch14-336
-export DEEPSPEED_CONFIG=yourpath/project/vlas/scripts/zero3.json
+export DEEPSPEED_CONFIG=yourpath/scripts/zero3.json
 
 deepspeed --include=localhost:0,1 yourpath/LLaVA-VLA/train/calvin_train_obs.py \
     --deepspeed $DEEPSPEED_CONFIG \
@@ -205,7 +204,10 @@ In the second Terminal window,  run the robot server:
 ```
 cd LLaVA-VLA
 bash  ./scripts/server/start_multi_server.sh
-# bash ./scripts/server/start_multi_server_qwen.sh(If you trained your model based on LLaVA-OneVision-0.5b, please run this script during evaluation.)
+```
+If you trained your model based on LLaVA-OneVision-0.5b, please run this script during evaluation.
+```
+bash ./scripts/server/start_multi_server_qwen.sh
 ```
 tart model server on you own port(here is 9097)，
 CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
