@@ -29,10 +29,11 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 <a id="new"></a>
 ## 🔥 News
 - **2025.06.17** 🌟 We release training codes, test codes, and checkpoints of LLaVA-VLA.
+- **2025.07.05** 🌟 We release models base on LLaVA-OneVision-0.5b.
 
 <a id="todo"></a>
 ## 📝 TODO
-- [ ] Release models based on LLaVA-OneVision-0.5b, which could be deployed on any GPU with 8G memory. (Before 6/25/2025)
+- [x] Release models based on LLaVA-OneVision-0.5b, which could be deployed on any GPU with 8G memory. 
 - [ ] Release models based on stronger LLaVA-OneVision-7b. (Before 6/25/2025)
 - [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm (In 07/2025).
 - [ ] Support training with LoRA on NVIDIA 4090 GPU.
@@ -113,6 +114,7 @@ If you have multiple GPUs and wish to use PyTorch's Distributed Data Parallel, s
 ```bash
 cd LLaVA-VLA
 bash ./scripts/train/calvin_finetune_obs.sh
+# bash ./scripts/train/finetune_ov_0.5b.sh(If you want to train based on LLaVA-OneVision-0.5b, please run this script.)
 ```
 calvin_finetune_obs.sh
 ```bash
@@ -203,6 +205,7 @@ In the second Terminal window,  run the robot server:
 ```
 cd LLaVA-VLA
 bash  ./scripts/server/start_multi_server.sh
+# bash ./scripts/server/start_multi_server_qwen.sh(If you trained your model based on LLaVA-OneVision-0.5b, please run this script during evaluation.)
 ```
 tart model server on you own port(here is 9097)，
 CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
