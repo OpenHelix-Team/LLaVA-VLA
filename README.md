@@ -205,7 +205,7 @@ In the second Terminal window,  run the robot server:
 cd LLaVA-VLA
 bash  ./scripts/server/start_multi_server.sh
 ```
-If you trained your model based on LLaVA-OneVision-0.5b, please run this script during evaluation.
+If you trained your model based on **LLaVA-OneVision-0.5b**, please run this script during evaluation.
 ```
 bash ./scripts/server/start_multi_server_qwen.sh
 ```
