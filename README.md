@@ -100,10 +100,10 @@ python ./scripts/helper/calvin2json.py
 <a id="modelzoo"></a>
 ## 📦 Model Zoo
 
-| Model Name   | VLM               | Vison Tower |
+| LLM Name   | VLA               | Vison Tower |
 |----------|-------------------|---:|
-| LLaVA-VLA  | [llava-v1.5-7b-calvin-rel-obs-reduce5-v1-abc2d_2epoch](https://huggingface.co/chenpyyy/LLaVA-VLA) |[clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) | 
-| Qwen0.5b-VLA  | [llava-onevision-qwen0.5b-calvin-rel-obs-siglip-reduce5-abc2d_4epoch](https://huggingface.co/chenpyyy/LLaVA-VLA) |[siglip-so400m-patch14-384](https://huggingface.co/google/siglip-so400m-patch14-384) | 
+| llama7b  | [llava-v1.5-7b-calvin-rel-obs-reduce5-v1-abc2d_2epoch](https://huggingface.co/chenpyyy/LLaVA-VLA) |[clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) | 
+| Qwen0.5  | [llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch](https://huggingface.co/chenpyyy/llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch/tree/main) |[siglip-so400m-patch14-384](https://huggingface.co/google/siglip-so400m-patch14-384) | 
 
 
 <a id="training"></a>
