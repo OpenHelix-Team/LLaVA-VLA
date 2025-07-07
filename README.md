@@ -117,7 +117,7 @@ bash ./scripts/train/calvin_finetune_obs.sh
 ```
 If you want to train based on **LLaVA-OneVision-0.5b**, please run this script.
 ```bash
-# bash ./scripts/train/finetune_ov_0.5b.sh
+bash ./scripts/train/finetune_ov_0.5b.sh
 ```
 calvin_finetune_obs.sh
 ```bash
