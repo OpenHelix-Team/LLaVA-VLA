@@ -128,10 +128,10 @@ export WANDB_DIR=./wandb
 
 export MODEL_NAME_OR_PATH=yourpath/LLaVA/llava-v1.5-7b
 export OUTPUT_DIR=yourpath
-export CALVIN_PROCESSED_JSON_PATH=yourpath/data/CALVIN/calvin_processed_json
-export CALVIN_PROCESSED_DIRECTORY=yourpath/data/CALVIN_process/task_ABCD_D/vla_processed_r5
-export ACTION_STAT=yourpath/data/statistics.yaml
-export VISION_TOWER=yourpath/project/clip-vit-large-patch14-336
+export CALVIN_PROCESSED_JSON_PATH=yourpathCALVIN/calvin_processed_json
+export CALVIN_PROCESSED_DIRECTORY=yourpathCALVIN_process/task_ABCD_D/vla_processed_r5
+export ACTION_STAT=yourpath/statistics.yaml
+export VISION_TOWER=yourpath/clip-vit-large-patch14-336
 export DEEPSPEED_CONFIG=yourpath/scripts/zero3.json
 
 deepspeed --include=localhost:0,1 yourpath/LLaVA-VLA/train/calvin_train_obs.py \
