@@ -29,7 +29,7 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 <a id="new"></a>
 ## 🔥 News
 - **2025.06.17** 🌟 We release training codes, test codes, and checkpoints of LLaVA-VLA.
-- **2025.07.05** 🌟 We release models base on LLaVA-OneVision-0.5b.
+- **2025.07.05** 🌟 We release our small model, LLaVA-VLA-0.5b, which could be deployed on consumer-grade GPUs (e.g., 24G NVIDIA 4090).
 
 <a id="todo"></a>
 ## 📝 TODO
@@ -47,7 +47,8 @@ The network architecture of our LLaVA-VLA. Given images, proprioception and lang
 
 <a id="experimental-results"></a>
 LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the simple structure, it outperforms several popular strong baselines that rely on large-scale pre-training and complex structures.
-![Result Visualization](./images/exp.png)
+![Comparison with baselines](./images/exp.png)
+![Comparison among different versions](./images/12321751895540_.pic.jpg)
 
 <a id="key-design"></a>
 ## ⭐ Key Designs
@@ -101,16 +102,16 @@ python ./scripts/helper/calvin2json.py
 <a id="modelzoo"></a>
 ## 📦 Model Zoo
 
-| LLM Name   | VLA               | Vison Tower |
+| VLA Model   | VLA               | Vison Tower |
 |----------|-------------------|---:|
-| llama7b  | [llava-v1.5-7b-calvin-rel-obs-reduce5-v1-abc2d_2epoch](https://huggingface.co/chenpyyy/LLaVA-VLA) |[clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) | 
-| Qwen0.5  | [llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch](https://huggingface.co/chenpyyy/llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch/tree/main) |[siglip-so400m-patch14-384](https://huggingface.co/google/siglip-so400m-patch14-384) | 
+| LLaVA-VLA-7b | [llava-v1.5-7b-calvin-rel-obs-reduce5-v1-abc2d_2epoch](https://huggingface.co/chenpyyy/LLaVA-VLA) |[clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) | 
+| LLaVA-VLA-0.5b  | [llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch](https://huggingface.co/chenpyyy/llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch/tree/main) |[siglip-so400m-patch14-384](https://huggingface.co/google/siglip-so400m-patch14-384) | 
 
 
 <a id="training"></a>
 ## 📈 Training
 LLaVA-VLA is trained on 8 A100 GPUs with 80GB memory. To train on fewer GPUs, you can reduce the per_device_train_batch_size and increase the gradient_accumulation_steps accordingly. If you want to train from the checkpoint, always keep the global batch size the same: per_device_train_batch_size x gradient_accumulation_steps x num_gpus.
-If you have multiple GPUs and wish to use PyTorch's Distributed Data Parallel, simply set the number in the command below to match the number of available GPUs(CUDA_VISIBLE_DEVICES and localhost).
+If you have multiple GPUs and wish to use PyTorch's Distributed Data Parallel, simply set the number in the command below to match the number of available GPUs (CUDA_VISIBLE_DEVICES and localhost).
 ```bash
 cd LLaVA-VLA
 bash ./scripts/train/calvin_finetune_obs.sh
