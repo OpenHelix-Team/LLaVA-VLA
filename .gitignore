@@ -32,7 +32,8 @@ llava-v1.5-7b
 checkpoints
 ckpts*
 clip-vit-large-patch14-336
-
+llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch
+siglip-so400m-patch14-384
 .ipynb_checkpoints
 *.ipynb
 

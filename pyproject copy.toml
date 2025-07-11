@@ -59,7 +59,6 @@ train = [
     "decord",
     "tyro",
     "scipy",
-    "flask",
 ]
 
 [project.urls]

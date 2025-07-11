@@ -75,6 +75,7 @@ conda create -n llava python=3.10 -y
 conda activate llava
 pip install --upgrade pip  
 pip install -e ".[train]"
+pip install "flash-attn==2.7.1.post4" --no-build-isolation
 ```
 ### Dataset
 2. Clone and install CALVIN
