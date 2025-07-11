@@ -69,10 +69,10 @@ Action chunking plays a pivotal role in manipulation tasks. Training the vision-
 ### Basic Env
 1. Clone this repository and navigate to LLaVA folder
 ```bash
-git clone https://github.com/haotian-liu/LLaVA.git
-cd LLaVA
-conda create -n llava python=3.10 -y
-conda activate llava
+git clone https://github.com/OpenHelix-Team/LLaVA-VLA
+cd LLaVA-VLA
+conda create -n llava-vla python=3.10 -y
+conda activate llava-vla
 pip install --upgrade pip  
 pip install -e ".[train]"
 pip install "flash-attn==2.7.1.post4" --no-build-isolation
