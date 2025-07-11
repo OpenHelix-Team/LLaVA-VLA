@@ -1,50 +1,44 @@
 #!/bin/bash
-# wandb login 3cc75ad549e94669d4b230f5cdea68473279dc08
-# conda activate llava-next
-# export PYTHONPATH=/data/user/wsong890/user68/project/rossvla:$PYTHONPATH
+
 set -x
-# export CUDA_HOME=/hpc2ssd/softwares/cuda/cuda-11.7
-# export PATH=/hpc2ssd/softwares/cuda/cuda-11.7/bin:$PATH
-# export LD_LIBRARY_PATH=/hpc2ssd/softwares/cuda/cuda-11.7/lib64:$LD_LIBRARY_PATH
-# export CUDA_VISIBLE_DEVICES=0,1
-# Set WandB offline
+
+# ========== Environment Settings ==========
 export WANDB_MODE=offline
 export WANDB_DIR=./wandb
 
-
-
-
-LLM_VERSION="Qwen/Qwen2-0.5B-Instruct" 
-# for 7b model we recommend bs=1, accum=2, 16 nodes, 128 gpus, lr=1e-5, warmup=0.03
-# for 72b model we recommend bs=1, accum=1, 32 nodes, 256 gpus, lr=1e-5, warmup=0.03
+# ========== Model Versions ==========
+LLM_VERSION="Qwen/Qwen2-0.5B-Instruct"
 LLM_VERSION_CLEAN="${LLM_VERSION//\//_}"
-VISION_MODEL_VERSION=<your_path_to_siglip-so400m-patch14-384>
+VISION_MODEL_VERSION="/your/path/to/siglip-so400m-patch14-384"  # 🔧 Set your actual vision model path here
 VISION_MODEL_VERSION_CLEAN="${VISION_MODEL_VERSION//\//_}"
-
-############### Pretrain ################
-
-# BASE_RUN_NAME="llavanext-google_siglip-so400m-patch14-384-Qwen_Qwen2-7B-Instruct-mlp2x_gelu-pretrain_blip558k_plain"
-# echo "BASE_RUN_NAME: ${BASE_RUN_NAME}"
-
-############### Finetune ################
-# Stage 2
 PROMPT_VERSION="qwen_2"
-RUN_NAME="llava-onevision-${VISION_MODEL_VERSION_CLEAN}-${LLM_VERSION_CLEAN}-ov_stage_am9-qwen2-0.5b" 
-PREV_STAGE_CHECKPOINT="<your_path_to_lmms-labllava-onevision-qwen2-0.5b-ov>" # 
+
+# ========== Data and Checkpoint Paths ==========
+DATA_PATH="/data/user/wsong890/user68/project/vlas/playground/task_ABC_D_training_r5.json" # 🔧 Set your actual vision model path here
+IMAGE_FOLDER="/data/user/wsong890/user68/data/calvin_process/task_ABC_D/vla_processed_r5" # 🔧 Set your actual vision model path here
+ACTION_STAT="/data1/songwx/calvin/dataset/calvin_abcd/training/statistics.yaml " # 🔧 Set your actual vision model path here
+PREV_STAGE_CHECKPOINT="/home/lg5/project/LLaVA-VLA/lmms-labllava-onevision-qwen2-0.5b-ov" # 🔧 Set your actual vision model path here
+
+# ========== Output and Logging ==========
+RUN_NAME="llava-onevision-${VISION_MODEL_VERSION_CLEAN}-${LLM_VERSION_CLEAN}-ov_stage_am9-qwen2-0.5b"
+# LOG_FILE="./log/train_0.5b.log"
+OUTPUT_DIR="./checkpoints/onevision/$RUN_NAME"
+
+# ========== Launch Training ==========
 echo "PREV_STAGE_CHECKPOINT: ${PREV_STAGE_CHECKPOINT}"
-echo "MID_RUN_NAME: ${RUN_NAME}"
-# export CUDA_VISIBLE_DEVICES=0,1
+echo "RUN_NAME: ${RUN_NAME}"
+
 ACCELERATE_CPU_AFFINITY=1 torchrun --nproc_per_node=2 --nnodes=1 --node_rank=0 --master_addr="localhost" --master_port="20228" \
     llava/train/train_mem.py \
     --deepspeed scripts/zero3.json \
     --model_name_or_path $PREV_STAGE_CHECKPOINT \
     --version $PROMPT_VERSION \
-    --data_path /data/user/wsong890/user68/project/vlas/playground/task_ABC_D_training_r5.json \
-    --image_folder /data/user/wsong890/user68/data/calvin_process/task_ABC_D/vla_processed_r5 \
-    --action_stat /data/user/wsong890/user68/data/statistics.yaml \
+    --data_path $DATA_PATH \
+    --image_folder $IMAGE_FOLDER \
+    --action_stat $ACTION_STAT \
     --mm_tunable_parts="mm_vision_tower,mm_mlp_adapter,mm_language_model" \
     --mm_vision_tower_lr=2e-6 \
-    --vision_tower ${VISION_MODEL_VERSION} \
+    --vision_tower $VISION_MODEL_VERSION \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
@@ -53,7 +47,7 @@ ACCELERATE_CPU_AFFINITY=1 torchrun --nproc_per_node=2 --nnodes=1 --node_rank=0 -
     --mm_patch_merge_type spatial_unpad \
     --bf16 True \
     --run_name $RUN_NAME \
-    --output_dir ./checkpoints/onevision/$RUN_NAME \
+    --output_dir $OUTPUT_DIR \
     --num_train_epochs 5 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 4 \
@@ -76,9 +70,8 @@ ACCELERATE_CPU_AFFINITY=1 torchrun --nproc_per_node=2 --nnodes=1 --node_rank=0 -
     --torch_compile_backend "inductor" \
     --dataloader_drop_last True \
     --frames_upbound 32 \
-    > ./log/train_0.5b.log 2>&1 &
+    > ./log/train_0.5b.log 2>&1 & \
     # --image_aspect_ratio anyres_max_9 \
     # --image_grid_pinpoints  "(1x1),...,(6x6)" \
-exit 0;
 
-# You can delete the sdpa attn_implementation if you want to use flash attn
+exit 0
