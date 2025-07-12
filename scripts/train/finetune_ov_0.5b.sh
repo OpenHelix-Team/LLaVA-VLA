@@ -14,10 +14,10 @@ VISION_MODEL_VERSION_CLEAN="${VISION_MODEL_VERSION//\//_}"
 PROMPT_VERSION="qwen_2"
 
 # ========== Data and Checkpoint Paths ==========
-DATA_PATH="/data/user/wsong890/user68/project/vlas/playground/task_ABC_D_training_r5.json" # 🔧 Set your actual vision model path here
-IMAGE_FOLDER="/data/user/wsong890/user68/data/calvin_process/task_ABC_D/vla_processed_r5" # 🔧 Set your actual vision model path here
-ACTION_STAT="/data1/songwx/calvin/dataset/calvin_abcd/training/statistics.yaml " # 🔧 Set your actual vision model path here
-PREV_STAGE_CHECKPOINT="/home/lg5/project/LLaVA-VLA/llava-onevision-qwen2-0.5b-ov" # 🔧 Set your actual vision model path here(https://huggingface.co/lmms-lab/llava-onevision-qwen2-0.5b-ov)
+DATA_PATH="/data/user/wsong890/user68/project/vlas/playground/task_ABC_D_training_r5.json" # 🔧 Set your data json path afther running calvin2json.py
+IMAGE_FOLDER="/data/user/wsong890/user68/data/calvin_process/task_ABC_D/vla_processed_r5" # 🔧 Set your  image path afther running calvin2json.py
+ACTION_STAT="/data1/songwx/calvin/dataset/calvin_abcd/training/statistics.yaml " # 🔧 Set your statistics.yaml of calvin(ABD-D,ABCD-D,Debug dataset is equal)
+PREV_STAGE_CHECKPOINT="/home/lg5/project/LLaVA-VLA/llava-onevision-qwen2-0.5b-ov" # 🔧 Set your LLaVA base model path here(https://huggingface.co/lmms-lab/llava-onevision-qwen2-0.5b-ov)
 
 # ========== Output and Logging ==========
 RUN_NAME="llava-onevision-${VISION_MODEL_VERSION_CLEAN}-${LLM_VERSION_CLEAN}-ov_stage_am9-qwen2-0.5b"
