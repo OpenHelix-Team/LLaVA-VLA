@@ -103,10 +103,10 @@ python ./scripts/helper/calvin2json.py
 <a id="modelzoo"></a>
 ## 📦 Model Zoo
 
-| VLA Model   | VLA               | Vison Tower |
-|----------|-------------------|---:|
-| LLaVA-VLA-7b | [llava-v1.5-7b-calvin-rel-obs-reduce5-v1-abc2d_2epoch](https://huggingface.co/chenpyyy/LLaVA-VLA) |[clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) | 
-| LLaVA-VLA-0.5b  | [llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch](https://huggingface.co/chenpyyy/llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch/tree/main) |[siglip-so400m-patch14-384](https://huggingface.co/google/siglip-so400m-patch14-384) | 
+| VLA Model   | Checkpoint               | Vison Tower | Base Model (for train)|
+|----------|-------------------|---|---:|
+| LLaVA-VLA-7b | [llava-v1.5-7b-calvin-rel-obs-reduce5-v1-abc2d_2epoch](https://huggingface.co/chenpyyy/LLaVA-VLA) |[clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) |  [llava-v1.5-7b](https://huggingface.co/liuhaotian/llava-v1.5-7b) |
+| LLaVA-VLA-0.5b  | [llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch](https://huggingface.co/chenpyyy/llava-onevision-siglip-so400m-patch14-384-qwen2_0.5b-calvin-rel-obs-reduce5-abc2d_4epoch/tree/main) |[siglip-so400m-patch14-384](https://huggingface.co/google/siglip-so400m-patch14-384) | [llava-onevision-qwen2-0.5b-ov](https://huggingface.co/lmms-lab/llava-onevision-qwen2-0.5b-ov) |
 
 
 <a id="training"></a>
