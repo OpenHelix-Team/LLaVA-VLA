@@ -3,7 +3,7 @@
 >Our repo aims to open-source a VLA with simple structure, strong performance, and easy extensibility, serving as a good baseline for beginners and senior researchers. We will continue to maintain this repo. Stars, discussions, and collaborations are welcome.<br>
 >我们的repo旨在开源一个结构简单，性能强劲，易于扩展的vla基线，方便初学者以及需要合适基线的研究者使用。我们将会持续维护此repo，欢迎大家星标、提问题/建议以及交流/合作。
 
->Core contributors: [Wenxuan Song](https://github.com/Songwxuan), Wei Zhao, Jiayi Chen, Xiaoquan Sun, [Pengxiang Ding](https://dingpx.github.io/)
+>Core contributors: [Wenxuan Song](https://github.com/Songwxuan), Wei Zhao, [Jiayi Chen](https://chris1220313648.github.io/), Xiaoquan Sun, [Pengxiang Ding](https://dingpx.github.io/)
 
 We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built upon the popular open-source VLM [LLaVA](https://github.com/haotian-liu/LLaVA). This implementation combines accessibility with strong performance for robotic manipulation tasks. The key features lie in:
 
