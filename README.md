@@ -130,8 +130,8 @@ export WANDB_DIR=./wandb
 
 export MODEL_NAME_OR_PATH=yourpath/LLaVA/llava-v1.5-7b
 export OUTPUT_DIR=yourpath
-export CALVIN_PROCESSED_JSON_PATH=yourpathCALVIN/calvin_processed_json
-export CALVIN_PROCESSED_DIRECTORY=yourpathCALVIN_process/task_ABCD_D/vla_processed_r5
+export CALVIN_PROCESSED_JSON_PATH=yourpath/CALVIN/calvin_processed_json
+export CALVIN_PROCESSED_DIRECTORY=yourpath/CALVIN_process/task_ABCD_D/vla_processed_r5
 export ACTION_STAT=yourpath/statistics.yaml
 export VISION_TOWER=yourpath/clip-vit-large-patch14-336
 export DEEPSPEED_CONFIG=yourpath/scripts/zero3.json
