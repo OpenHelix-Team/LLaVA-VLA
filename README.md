@@ -211,7 +211,7 @@ If you trained your model based on **LLaVA-OneVision-0.5b**, please run this scr
 ```
 bash ./scripts/server/start_multi_server_qwen.sh
 ```
-tart model server on you own port(here is 9097)，
+tart model server on you own port (here is 9097)，
 CUDA_VISIBLE_DEVICES specifies the number of GPUs (e.g., if you have two GPUs, it would be 0,1).
 
 Below is an explanation of the most commonly adjusted parameters:
