@@ -124,6 +124,13 @@ If you want to train based on **LLaVA-OneVision-0.5b**, please run this script.
 ```bash
 bash ./scripts/train/finetune_ov_0.5b.sh
 ```
+We have tested the maximum batch size per device and evaluated the approximate training time based on **LLaVA-OneVision-0.5b** training on consumer-grade 24G NVIDIA 4090:
+| GPU                 | Maximum Batch Size | Approximate Training Time |
+|---------------------|:------------------:|:-------------------------:|
+| 1 * 24G NVIDIA 4090 | 4                  | 420 hours                 |
+| 2 * 24G NVIDIA 4090 | 6                  | 175 hours                 |
+| 4 * 24G NVIDIA 4090 | 10                 | 84 hours                  |
+
 calvin_finetune_obs.sh
 ```bash
 #!/bin/bash 
