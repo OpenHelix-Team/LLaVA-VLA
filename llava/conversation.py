@@ -563,7 +563,7 @@ Answer the questions.""",
     sep="<|im_end|>",
 )
 
-default_conversation = conv_vicuna_v0
+default_conversation = conv_vicuna_v1 
 conv_templates = {
     "default": conv_vicuna_v0,
     "v0": conv_vicuna_v0,
