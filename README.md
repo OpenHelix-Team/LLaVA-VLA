@@ -22,6 +22,7 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 - [Model Zoo](#modelzoo)
 - [Training](#training)
 - [Evaluation](#evaluation)
+- [Deploy to RoboTwin](#Deploy-to-RoboTwin)
 - [Acknowledgement](#acknowledgement)
 - [Contact](#contact)
 - [Citation](#citation)
@@ -30,12 +31,12 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 ## 🔥 News
 - **2025.06.17** 🌟 We release training codes, test codes, and checkpoints of LLaVA-VLA.
 - **2025.07.05** 🌟 We release our small model, LLaVA-VLA-0.5b, which could be deployed on consumer-grade GPUs (e.g., 24G NVIDIA 4090). We also release a version on the base of LLaVA-OneVision-7b, which reaches the highest performance.
-
+- **2025.07.24** 🌟 We have deployed the model to RoboTwin.
 <a id="todo"></a>
 ## 📝 TODO
 - [x] Release models based on LLaVA-OneVision-0.5b, which could be deployed on any GPU with 8G memory. 
 - [x] Release models based on stronger LLaVA-OneVision-7b. (Before 6/25/2025)
-- [ ] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm (In 07/2025).
+- [x] Deploy our model on [RoboTwin](https://github.com/TianxingChen/RoboTwin) benchmark, a real-world-aligned simulator with dual-arm (In 07/2025).
 - [ ] Deploy our model on [LIBERO](https://github.com/Lifelong-Robot-Learning/LIBERO) benchmark.
 - [ ] Support training with LoRA on NVIDIA 4090 GPU.
 - [ ] Release model with action expert for more accurate action representation.
@@ -228,11 +229,13 @@ Below is an explanation of the most commonly adjusted parameters:
 - `model_path`: Path to the model checkpoint.
 - `action_stat`: Action normalization stats.
 
-
+<a id="Deploy to RoboTwin"></a>
+## 💸 Deploy to RoboTwin
+If you want to deploy our model to [RoboTwin](https://github.com/RoboTwin-Platform/RoboTwin), please add the **LLaVA-VLA_deploy_to_RoboTwin** folder to the **policy** folder in the RoboTwin projectre and name the folder to **LLaVA-VLA**. See [LLaVA-VLA](https://robotwin-platform.github.io/doc/usage/LLaVA-VLA.html) for more details.
 
 <a id="acknowledgement"></a>
 ## 🙏 Acknowledgement
-The development of LLaVA-VLA has been built upon a strong foundation laid by previous work: [LLaVA](https://github.com/haotian-liu/LLaVA), [VLAS](https://arxiv.org/abs/2502.13508), [CALVIN](https://github.com/mees/calvin), [OpenVLA](https://github.com/openvla/openvla), [RoboVLM](https://github.com/Robot-VLAs/RoboVLMs).
+The development of LLaVA-VLA has been built upon a strong foundation laid by previous work: [LLaVA](https://github.com/haotian-liu/LLaVA), [VLAS](https://arxiv.org/abs/2502.13508), [CALVIN](https://github.com/mees/calvin), [OpenVLA](https://github.com/openvla/openvla), [RoboVLM](https://github.com/Robot-VLAs/RoboVLMs), [RoboTwin](https://github.com/RoboTwin-Platform/RoboTwin).
 
 <a id="contact"></a>
 
