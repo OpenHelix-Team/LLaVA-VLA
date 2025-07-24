@@ -231,7 +231,7 @@ Below is an explanation of the most commonly adjusted parameters:
 
 <a id="Deploy to RoboTwin"></a>
 ## 💸 Deploy to RoboTwin
-If you want to deploy our model to [RoboTwin](https://github.com/RoboTwin-Platform/RoboTwin), please add the **LLaVA-VLA_deploy_to_RoboTwin** folder to the **policy** folder in the RoboTwin projectre and name the folder to **LLaVA-VLA**. See [LLaVA-VLA](https://robotwin-platform.github.io/doc/usage/LLaVA-VLA.html) for more details.
+If you want to deploy our model to [RoboTwin](https://github.com/RoboTwin-Platform/RoboTwin), please add the project to the **policy** folder in the RoboTwin project and rename the folder to **LLaVA-VLA**. See [LLaVA-VLA](https://robotwin-platform.github.io/doc/usage/LLaVA-VLA.html) for more details.
 
 <a id="acknowledgement"></a>
 ## 🙏 Acknowledgement
