@@ -182,6 +182,7 @@ deepspeed --include=localhost:0,1 yourpath/LLaVA-VLA/train/calvin_train_obs.py \
     --gradient_checkpointing True \
     --dataloader_num_workers 4 \
     --lazy_preprocess True \
+    --use_diffusion_head False \
     --report_to wandb \
     --report_to_wandb_project your_project_name \
     --report_to_wandb_run_name your_run_name
@@ -195,6 +196,7 @@ Below is an explanation of the most commonly adjusted training parameters：
 - `per_device_train_batch_size`: Training batch size per GPU.
 - `image_aspect_ratio`: Image processing method.
 - `num_train_epochs`: otal number of training rounds.
+- `use_diffusion_head`:use difussion head for decode
 
 <a id="evaluation"></a>
 ## 🔬 Evaluation
