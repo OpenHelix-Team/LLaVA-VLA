@@ -53,6 +53,7 @@ The network architecture of our LLaVA-VLA. Given images, proprioception and lang
 LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the simple structure, it outperforms several popular strong baselines that rely on large-scale pre-training and complex structures.
 ![Comparison with baselines](./images/exp.png)
 ![Comparison among different versions](./images/12321751895540_.pic.jpg)
+![Comparison among different decoder](./images/action_head.png)
 
 <a id="key-design"></a>
 ## ⭐ Key Designs
