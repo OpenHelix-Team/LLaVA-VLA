@@ -233,7 +233,7 @@ Below is an explanation of the most commonly adjusted parameters:
 - `model_path`: Path to the model checkpoint.
 - `action_stat`: Action normalization stats.
 
-<a id="Deploy to RoboTwin"></a>
+<a id="Deploy-to-RoboTwin"></a>
 ## 💸 Deploy to RoboTwin
 If you want to deploy our model to [RoboTwin](https://github.com/RoboTwin-Platform/RoboTwin), please add the project to the **policy** folder in the RoboTwin project and rename the folder to **LLaVA-VLA**. See [LLaVA-VLA](https://robotwin-platform.github.io/doc/usage/LLaVA-VLA.html) for more details.
 
