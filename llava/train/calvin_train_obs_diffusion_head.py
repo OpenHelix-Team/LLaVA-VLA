@@ -41,6 +41,7 @@ from llava.action_tokenizer import ActionTokenizer, encode_actions, encode_robot
 from PIL import Image
 from functools import partial
 
+import numpy as np
 
 local_rank = None
 
@@ -52,6 +53,7 @@ def rank0_print(*args):
 
 from packaging import version
 IS_TOKENIZER_GREATER_THAN_0_14 = version.parse(tokenizers.__version__) >= version.parse('0.14')
+IMAGE_TOKEN_NUM=576
 
 @dataclass
 class ModelArguments:
@@ -108,6 +110,7 @@ class ModelArguments:
     delay_load: Optional[bool] = field(default=True)
     add_faster_video: Optional[bool] = field(default=False)
     faster_token_stride: Optional[int] = field(default=10)
+    use_diffusion_head: Optional[bool] = field(default=False)
 
 
 @dataclass
@@ -325,12 +328,13 @@ def format_source_data(sources, conv, has_embody, action_tokenizer):
             role = roles[sentence["from"]]
             assert role == conv.roles[j % 2], f"{i}"
             if sentence["from"] == "gpt":
-                if has_embody:
-                    sent_value = action_to_lang(sentence["value"], action_tokenizer)
-                    if isinstance(sent_value, tuple):
-                        sent_value = sent_value[-1]
-                else:
-                    sent_value = sentence["value"]
+                # if has_embody:
+                #     sent_value = action_to_lang(sentence["value"], action_tokenizer)
+                #     if isinstance(sent_value, tuple):
+                #         sent_value = sent_value[-1]
+                # else:
+                #     sent_value = sentence["value"]
+                sent_value=None
             else:
                 if has_embody:
                     sent_value = sentence["value"]
@@ -418,19 +422,36 @@ def get_input_ids(
     has_image: bool = False,
     has_embody: bool = False,
 ) -> Dict:
+    # print("sources:",sources)
+    # action=sources[0]["conversations"][-1]["value"]
+    # action = sources[0][-1]["value"]
+    # action = action.split(" ")
+    action = torch.tensor(
+        [float(x) for x in sources[0][-1]["value"].split()],
+        dtype=torch.float32
+    ).reshape(-1, 7)
+    # print("action:",action)
+    
     conv = conversation_lib.default_conversation.copy()
     # Format conversations
     conversations = format_source_data(sources, conv, has_embody, action_tokenizer)
+    # print("conversations:",conversations)
     # Tokenize conversations
     input_ids = torch.stack([tokenizer_image_token(prompt, tokenizer, return_tensors='pt') for prompt in conversations], dim=0)
     targets = input_ids.clone()
     assert conv.sep_style == conversation_lib.SeparatorStyle.TWO
     # Mask targets
-    targets = mask_target_labels(conversations, conv, targets, tokenizer)
-    # print("在这里,labels为:", targets)
+    # targets = mask_target_labels(conversations, conv, targets, tokenizer)
+    seq_len=torch.tensor(input_ids.shape[1],dtype=torch.long)
+    assert targets.shape[1]==input_ids.shape[1]
+    # print("labels:", targets)
+    # print("input_ids:", input_ids)
+    # print("targets:", targets)
     return dict(
         input_ids=input_ids,
         labels=targets,
+        action_lables=action,
+        seq_len=seq_len
     )
 def preprocess_multimodal(
     sources: Sequence[str],
@@ -495,19 +516,17 @@ class LazySupervisedDataset(Dataset):
                         result = Image.new(pil_img.mode, (height, height), background_color)
                         result.paste(pil_img, ((height - width) // 2, 0))
                         return result
+                image_size=image.size
                 image = expand2square(image, tuple(int(x*255) for x in processor.image_mean))
                 image = processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
-                image=[(image,(336,336),'image')]
+                image=[(image,image_size,'image')]
             else:
                 image = processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
-
-                # print("use this")
-                # print("image.shape:",image.shape)
-                # image=[(image,(336,336),'image')]
-        # print("image.shape:",image.shape)
+        
         sources = preprocess_multimodal(
                     copy.deepcopy([e["conversations"] for e in sources]),
                     self.data_args)
+
         data_dict = get_input_ids(
             sources,
             self.tokenizer,
@@ -515,11 +534,16 @@ class LazySupervisedDataset(Dataset):
             has_image=('image' in self.list_data_dict[i]),
             has_embody=('embody' in self.list_data_dict[i])
             )
+        # print("data_dict.keys():",data_dict.keys())
         if isinstance(i, int):
             data_dict = dict(input_ids=data_dict["input_ids"][0],
-                             labels=data_dict["labels"][0])
+                             labels=data_dict["labels"][0],
+                             action_lables=data_dict["action_lables"],
+                             seq_len=data_dict["seq_len"]
+                             )
         # image exist in the data
         data_dict['image'] = image
+        # print("data_dict.keys():",data_dict.keys())
         return data_dict
 
 
@@ -532,6 +556,14 @@ class DataCollatorForSupervisedDataset(object):
     def __call__(self, instances: Sequence[Dict]) -> Dict[str, torch.Tensor]:
         input_ids, labels = tuple([instance[key] for instance in instances]
                                   for key in ("input_ids", "labels"))
+        action_lables = [instance["action_lables"] for instance in instances]
+        action_lables = torch.stack(action_lables)
+        last_token_index = [instance["seq_len"] for instance in instances]
+        last_token_index = torch.stack(last_token_index)
+        last_token_index = (last_token_index+IMAGE_TOKEN_NUM-2).unsqueeze(1).unsqueeze(2) 
+        
+        # print("last_token_index:",last_token_index)
+        # print("action_lables.shape:",action_lables.shape)
         input_ids = torch.nn.utils.rnn.pad_sequence(
             input_ids,
             batch_first=True,
@@ -539,11 +571,14 @@ class DataCollatorForSupervisedDataset(object):
         labels = torch.nn.utils.rnn.pad_sequence(labels,
                                                  batch_first=True,
                                                  padding_value=IGNORE_INDEX)
+        # print("labels.shape:",labels.shape)
         input_ids = input_ids[:, :self.tokenizer.model_max_length]
         labels = labels[:, :self.tokenizer.model_max_length]
         batch = dict(
             input_ids=input_ids,
             labels=labels,
+            action_lables=action_lables,
+            last_token_index=last_token_index,
             attention_mask=input_ids.ne(self.tokenizer.pad_token_id),
         )
 
@@ -555,7 +590,6 @@ class DataCollatorForSupervisedDataset(object):
         #         batch['images'] = images
         if "image" in instances[0]:
             images = [instance["image"] for instance in instances]
-
             batch["image_sizes"] = [im[1] for im_list in images for im in im_list]
             batch["modalities"] = [im[2] for im_list in images for im in im_list]
             images = [im[0] for im_list in images for im in im_list]
@@ -644,7 +678,8 @@ def train(attn_implementation=None):
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
                 attn_implementation=attn_implementation,
-                torch_dtype=(torch.bfloat16 if training_args.bf16 else None), 
+                torch_dtype=(torch.bfloat16 if training_args.bf16 else None),
+                use_diffusion_head=model_args.use_diffusion_head,
                 **bnb_model_from_pretrained_args
             )
     else:
@@ -781,7 +816,13 @@ def train(attn_implementation=None):
     data_module = make_supervised_data_module(tokenizer=tokenizer,
                                               action_tokenizer=action_tokenizer,
                                               data_args=data_args)
-
+    for name, param in model.action_model.named_parameters():
+        try:
+            with torch.no_grad():
+                param.data = param.data.to(torch.bfloat16)
+            print(f"[Converted] {name} to bfloat16")
+        except Exception as e:
+            print(f"[Warning] Failed to convert {name}: {e}")
     trainer = LLaVATrainer(model=model,
                     tokenizer=tokenizer,
                     args=training_args,
@@ -789,14 +830,7 @@ def train(attn_implementation=None):
     # print("🔍 当前参与训练的参数层:")
     # for name, param in model.named_parameters():
     #     if param.requires_grad:
-    #         print(f"  - {name}: {list(param.shape)}")
-    # for name, param in model.named_parameters():
-    #     if param.requires_grad:
-    #         print("name:",name)
-    # print("vision_tower :",model.get_vision_tower())
-    # for name, param in model.get_vision_tower().named_parameters():
-    #     print(name, param.shape)
-    #     break
+    #         print(f"  - {name}: {param.dtype}")
     if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
         trainer.train(resume_from_checkpoint=True)
     else:

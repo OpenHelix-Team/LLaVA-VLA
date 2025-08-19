@@ -12,9 +12,9 @@ export CALVIN_PROCESSED_JSON_PATH=yourpath/calvin/calvin_processed_json
 export CALVIN_PROCESSED_DIRECTORY=/yourpath/calvin_process/task_ABCD_D/vla_processed_r5
 export ACTION_STAT=/yourpath/calvin/dataset/task_ABCD_D/training/statistics.yaml
 export VISION_TOWER=/yourpath/clip-vit-large-patch14-336
-export DEEPSPEED_CONFIG=./LLaVA/scripts/zero3.json
+export DEEPSPEED_CONFIG=scripts/zero3.json
 # Please replace 'yourpath' with your actual path!
-deepspeed --include=localhost:0,1 ./LLaVA/llava/train/calvin_train_obs.py \
+deepspeed --include=localhost:0,1 llava/train/calvin_train_obs.py \
     --deepspeed $DEEPSPEED_CONFIG \
     --model_name_or_path $MODEL_NAME_OR_PATH \
     --version v1 \

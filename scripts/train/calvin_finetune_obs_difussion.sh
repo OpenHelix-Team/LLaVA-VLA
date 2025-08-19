@@ -18,7 +18,7 @@ export ACTION_STAT=/data/user/wsong890/user68/data/statistics.yaml
 export VISION_TOWER=/data/user/wsong890/user68/project/clip-vit-large-patch14-336
 export DEEPSPEED_CONFIG=/data/user/wsong890/user68/project/vlas/scripts/zero3.json
 
-deepspeed --include=localhost:0,1,2,3  --master_port=29688 llava/train/calvin_train_obs.py \
+deepspeed --include=localhost:0,1,2,3  --master_port=29688 llava/train/calvin_train_obs_diffusion_head.py \
     --deepspeed $DEEPSPEED_CONFIG \
     --model_name_or_path $MODEL_NAME_OR_PATH \
     --version v1 \
@@ -51,7 +51,6 @@ deepspeed --include=localhost:0,1,2,3  --master_port=29688 llava/train/calvin_tr
     --gradient_checkpointing True \
     --dataloader_num_workers 8 \
     --lazy_preprocess True \
-    --use_diffusion_head True \
     --report_to wandb \
     --report_to_wandb_project your_project_name \
     --report_to_wandb_run_name your_run_name
