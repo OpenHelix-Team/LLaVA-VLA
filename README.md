@@ -60,7 +60,10 @@ LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the si
 ![Comparison with baselines](./images/exp.png)
 ![Comparison among different versions](./images/12321751895540_.pic.jpg)
 ![Comparison among different decoder](./images/action_head.png)
-
+Evaluation on RoboTwin benchmark. Success rates for 8 tasks (Easy and Hard). Best result in each row
+highlighted in Bold. RDT achieves the highest average in both settings (48.9% easy, 11.4% hard) under large model, while
+our method (LightVLA) shows strong performance in small model, especially in hard tasks (28.6%).
+![Comparison with baselines](./images/robotwin_result.png)
 <a id="key-design"></a>
 ## ⭐ Key Designs
 1.	Concatenated Multi-view Images:
