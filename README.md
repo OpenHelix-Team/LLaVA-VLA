@@ -63,7 +63,7 @@ LLaVA-VLA has a competitive performance on the CALVIN ABC➡D tasks. With the si
 
 Evaluation on RoboTwin benchmark. Success rates for 8 tasks (Easy and Hard). Best result in each row
 highlighted in Bold. RDT achieves the highest average in both settings (48.9% easy, 11.4% hard) under large model, while
-our method (LightVLA) shows strong performance in small model, especially in hard tasks (28.6%).
+our method (LightVLA) shows strong performance in small model, especially in hard tasks (28.6%). Due to the large number of parameters in LLaVA-VLA, we scaled down the training trajectories, using 400 trajectories per task for training.
 ![Comparison with baselines](./images/RoboTwin_result.png)
 <a id="key-design"></a>
 ## ⭐ Key Designs
