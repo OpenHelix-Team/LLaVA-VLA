@@ -260,10 +260,10 @@ Please feel free to add my WeChat: swx0757.
 ## 📑Citation
 We are writing the technical report for this project. Before that, you could kindly cite our paper:
 ```
-@article{pdvla,
-  title={Accelerating Vision-Language-Action Model Integrated with Action Chunking via Parallel Decoding},
-  author={Song, Wenxuan and Chen, Jiayi and Ding, Pengxiang and Zhao, Han and Zhao, Wei and Zhong, Zhide and Ge, Zongyuan and Ma, Jun and Li, Haoang},
-  journal={arXiv preprint arXiv:2503.02310},
-  year={2025}
+@article{llava-vla,
+  title={Rethinking the Practicality of Vision-language-action Model: A Comprehensive Benchmark and An Improved Baseline}, 
+  author={Wenxuan Song and Jiayi Chen and Xiaoquan Sun and Huashuo Lei and Yikai Qin and Wei Zhao and Pengxiang Ding and Han Zhao and Tongxin Wang and Pengxu Hou and Zhide Zhong and Haodong Yan and Donglin Wang and Jun Ma and Haoang Li},
+  journal={arXiv preprint arXiv:2602.22663}, 
+  year={2026},
 }
 ```
