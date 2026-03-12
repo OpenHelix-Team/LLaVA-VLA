@@ -32,7 +32,7 @@ We introduce **LLaVA-VLA**, an open-source Vision-Language-Action model built up
 
 <a id="new"></a>
 ## 🔥 News
-- **[2026/01/27]** 🌟 LLaVA-VLA is accepted by ICRA 2026!🎉
+- **2026/01/27** 🌟 LLaVA-VLA is accepted by ICRA 2026!🎉
 - **2025.06.17** 🌟 We release training codes, test codes, and checkpoints of LLaVA-VLA.
 - **2025.07.05** 🌟 We release our small model, LLaVA-VLA-0.5b, which could be deployed on consumer-grade GPUs (e.g., 24G NVIDIA 4090). We also release a version on the base of LLaVA-OneVision-7b, which reaches the highest performance.
 - **2025.07.24** 🌟 We have deployed the model on [RoboTwin](https://github.com/TianxingChen/RoboTwin).
